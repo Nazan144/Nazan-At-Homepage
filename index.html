@@ -612,6 +612,28 @@ body main > section.value-section .value-experience a.btn.primary:hover{
   border-color:#59378a!important;
 }
 
+</style><style id="nai-compass-live-fix">
+/* Keep the compass legible on the GitHub-hosted homepage. */
+.nai-hero-art .nai-compass-animation,
+.nai-hero-art .nai-compass-animation.is-playing{
+  display:block!important;
+  width:clamp(150px,38%,245px)!important;
+  max-height:58%!important;
+  border:2px solid rgba(186,151,236,.83)!important;
+  box-shadow:0 9px 35px rgba(52,24,91,.26),0 0 28px rgba(164,118,224,.3)!important;
+  background:#1b1730!important;
+}
+.nai-hero-art .nai-replay{
+  background:#5b3b85!important;
+  color:#fff!important;
+  border-color:#b89ce0!important;
+}
+.nai-hero-art .nai-replay:hover,
+.nai-hero-art .nai-replay:focus-visible{background:#422763!important}
+@media(max-width:520px){.nai-hero-art .nai-compass-animation{width:145px!important;right:7px!important;bottom:78px!important}}
+@media(prefers-reduced-motion:reduce){
+  .nai-hero-art .nai-compass-animation{display:block!important}
+}
 </style></head><body>
 <header><div class="container top"><a class="brand" href="#home"><span class="brandmark">N</span><span>NAZAN AT <span style="color:var(--gold)">/ HUMAN &amp; AI BYDESIGN</span></span></a><button aria-controls="mainnav" aria-expanded="false" class="menu" id="menuToggle">Menü ☰</button><nav aria-label="Hauptnavigation" class="nav" id="mainnav"><a class="menu-link" href="#home">Startseite</a><div class="menu-group"><a class="menu-link" href="#ueber-mich">Über mich</a><button aria-expanded="false" aria-label="Untermenü Über mich öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Über mich" class="submenu" role="group"><a href="#ueber-mich">Profil</a><a href="#arbeitsbereiche">Arbeitsbereiche</a><a href="#ki-skills">KI-Skills</a></div></div><div class="menu-group"><a class="menu-link" href="#beratung">Beratung</a><button aria-expanded="false" aria-label="Untermenü Beratung öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Beratung" class="submenu" role="group"><a href="#philosophie">Beratungsphilosophie</a><a href="#leistungen">Leistungen</a><a href="#einstein">Einstein-Framework</a><a href="#methodenbausteine">Vertiefende Methodik</a></div></div><div class="menu-group"><a class="menu-link" href="#arbeitsproben">Projekte &amp; Arbeitsproben</a><button aria-expanded="false" aria-label="Untermenü Projekte &amp; Arbeitsproben öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Projekte &amp; Arbeitsproben" class="submenu" role="group"><a href="#arbeitsproben">Referenzprojekte &amp; Demos</a><a href="#originale">Weitere Projekte</a></div></div><div class="menu-group"><a class="menu-link" href="#wissen">Wissen &amp; Netzwerk</a><button aria-expanded="false" aria-label="Untermenü Wissen &amp; Netzwerk öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Wissen &amp; Netzwerk" class="submenu" role="group"><a href="ki-handbuch.html">KI-Lexikon</a><a href="#netzwerk">Innovationsnetzwerk</a></div></div><a class="menu-link" href="#kontakt">Kontakt</a><a aria-label="Interner Bereich, Anmeldung erforderlich" class="menu-link" href="index.html#intern-hinweis">🔒 Intern</a></nav></div></header><div id="design-preview-note" role="note" style="position:relative;background:#ede1fc;color:#4a2b73;text-align:center;padding:9px 14px;font:600 12px/1.4 system-ui,sans-serif;border-bottom:1px solid #d5bff0">Human &amp; AI byDesign · Einheitliche Violett-Farbwelt · Version 12.11</div>
 <main>
@@ -781,32 +803,27 @@ document.querySelectorAll('#mainnav .submenu a').forEach(a=>a.addEventListener('
 }));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.menu-group.submenu-open').forEach(x=>{x.classList.remove('submenu-open');x.querySelector('.submenu-toggle').setAttribute('aria-expanded','false')})});
 </script><script>(function(){const params=new URLSearchParams(location.search);const id=params.get('demo');if(!id)return;const start=()=>{const btn=document.querySelector('[data-demo="'+CSS.escape(id)+'"]');if(!btn)return;btn.click();};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();})();</script><script>
+/* NAI compass: show the looping GIF continuously; replay reliably from the first frame. */
 (function(){
   const hero=document.getElementById('naiCompassHero');
   const img=document.getElementById('naiCompassAnim');
   const replay=document.getElementById('naiReplay');
-  const chat=document.getElementById('naiToggle');
   if(!hero||!img||!replay)return;
-  let stop=null;
-  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const animationURL=img.getAttribute('data-src') || 'assets/inline/visual_2.gif';
+  let replayCount=0;
   function playCompass(){
-    if(reduced.matches)return;
-    if(stop)window.clearTimeout(stop);
-    img.classList.remove('is-playing');
-    // A fresh URL starts the finite GIF from frame one on each requested replay.
-    img.removeAttribute('src'); img.src=img.dataset.src;
+    // The URL changes on each manual replay so browsers restart frame 1.
+    replayCount += 1;
+    img.src = animationURL + (animationURL.includes('?')?'&':'?') + 'replay=' + replayCount;
     img.classList.add('is-playing');
-    stop=window.setTimeout(()=>{
-      img.classList.remove('is-playing');
-      img.removeAttribute('src');
-      stop=null;
-    },1150);
   }
-  replay.addEventListener('click',e=>{e.stopPropagation();playCompass();});
-  hero.addEventListener('click',playCompass);
-  if(chat)chat.addEventListener('click',playCompass);
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',playCompass,{once:true});
-  else playCompass();
-  window.addEventListener('pagehide',()=>{if(stop)window.clearTimeout(stop);});
+  // Unlike the old 1.15s timeout, the GIF remains visible and loops.
+  img.src=animationURL;
+  img.classList.add('is-playing');
+  replay.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();playCompass();});
+  hero.addEventListener('click',event=>{
+    if(event.target.closest('button,a'))return;
+    playCompass();
+  });
 })();
 </script></body></html>
