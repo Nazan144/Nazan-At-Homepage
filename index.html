@@ -612,50 +612,6 @@ body main > section.value-section .value-experience a.btn.primary:hover{
   border-color:#59378a!important;
 }
 
-</style><style id="nai-compass-live-fix">
-/* Keep the compass legible on the GitHub-hosted homepage. */
-.nai-hero-art .nai-compass-animation,
-.nai-hero-art .nai-compass-animation.is-playing{
-  display:block!important;
-  width:clamp(150px,38%,245px)!important;
-  max-height:58%!important;
-  border:2px solid rgba(186,151,236,.83)!important;
-  box-shadow:0 9px 35px rgba(52,24,91,.26),0 0 28px rgba(164,118,224,.3)!important;
-  background:#1b1730!important;
-}
-.nai-hero-art .nai-replay{
-  background:#5b3b85!important;
-  color:#fff!important;
-  border-color:#b89ce0!important;
-}
-.nai-hero-art .nai-replay:hover,
-.nai-hero-art .nai-replay:focus-visible{background:#422763!important}
-@media(max-width:520px){.nai-hero-art .nai-compass-animation{width:145px!important;right:7px!important;bottom:78px!important}}
-@media(prefers-reduced-motion:reduce){
-  .nai-hero-art .nai-compass-animation{display:block!important}
-}
-</style><style id="nai-compass-click-fix-v1213">
-/* V12.13: preview is still; single animation is played via a real button. */
-.nai-hero-art .nai-compass-animation,
-.nai-hero-art .nai-compass-animation.is-playing{display:none!important;
-  width:clamp(150px,38%,245px)!important;max-height:58%!important;
-  border:2px solid rgba(186,151,236,.83)!important;
-  box-shadow:0 9px 35px rgba(52,24,91,.26)!important;
-  background:#1b1730!important;pointer-events:none!important;}
-.nai-hero-art .nai-compass-animation.is-playing{display:block!important}
-.nai-hero-art .nai-replay{position:absolute!important;top:14px!important;right:14px!important;
- z-index:50!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
- cursor:pointer!important;pointer-events:auto!important;touch-action:manipulation!important;
- min-height:45px!important;min-width:156px!important;padding:11px 16px!important;
- background:#60418e!important;color:#fff!important;border:2px solid #e0c8f7!important;
- border-radius:999px!important;font-size:14px!important;font-weight:800!important;
- box-shadow:0 6px 22px rgba(32,16,50,.35)!important;}
-.nai-hero-art .nai-replay:hover{background:#492d70!important;transform:translateY(-1px)}
-.nai-hero-art .nai-replay:focus-visible{outline:3px solid #fff!important;outline-offset:3px}
-.nai-hero-art .nai-replay:disabled{opacity:1!important;cursor:wait!important}
-@media(max-width:520px){.nai-hero-art .nai-replay{top:8px!important;right:8px!important;min-width:145px!important;padding:9px 12px!important}
- .nai-hero-art .nai-compass-animation{width:145px!important;right:7px!important;bottom:78px!important}}
-@media(prefers-reduced-motion:reduce){.nai-hero-art .nai-compass-animation.is-playing{display:none!important}}
 </style>
 <style id="private-workspace-v1214">
 /* Fully scoped UI. Password is never checked or stored in browser-side code. */
@@ -689,8 +645,15 @@ header .nav button.menu-link:hover{color:#60418e}
 @media(max-width:860px){header .nav button.menu-link{font-size:14px;padding:10px 2px}}
 @media(max-width:600px){#privateWorkspace .workspace-dialog{padding:18px 14px}#privateWorkspace .ws-frame{height:65dvh}}
 </style>
-</head><body>
-<header><div class="container top"><a class="brand" href="#home"><span class="brandmark">N</span><span>NAZAN AT <span style="color:var(--gold)">/ HUMAN &amp; AI BYDESIGN</span></span></a><button aria-controls="mainnav" aria-expanded="false" class="menu" id="menuToggle">Menü ☰</button><nav aria-label="Hauptnavigation" class="nav" id="mainnav"><a class="menu-link" href="#home">Startseite</a><div class="menu-group"><a class="menu-link" href="#ueber-mich">Über mich</a><button aria-expanded="false" aria-label="Untermenü Über mich öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Über mich" class="submenu" role="group"><a href="#ueber-mich">Profil</a><a href="#arbeitsbereiche">Arbeitsbereiche</a><a href="#ki-skills">KI-Skills</a></div></div><div class="menu-group"><a class="menu-link" href="#beratung">Beratung</a><button aria-expanded="false" aria-label="Untermenü Beratung öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Beratung" class="submenu" role="group"><a href="#philosophie">Beratungsphilosophie</a><a href="#leistungen">Leistungen</a><a href="#einstein">Einstein-Framework</a><a href="#methodenbausteine">Vertiefende Methodik</a></div></div><div class="menu-group"><a class="menu-link" href="#arbeitsproben">Projekte &amp; Arbeitsproben</a><button aria-expanded="false" aria-label="Untermenü Projekte &amp; Arbeitsproben öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Projekte &amp; Arbeitsproben" class="submenu" role="group"><a href="#arbeitsproben">Referenzprojekte &amp; Demos</a><a href="#originale">Weitere Projekte</a></div></div><div class="menu-group"><a class="menu-link" href="#wissen">Wissen &amp; Netzwerk</a><button aria-expanded="false" aria-label="Untermenü Wissen &amp; Netzwerk öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Wissen &amp; Netzwerk" class="submenu" role="group"><a href="ki-handbuch.html">KI-Lexikon</a><a href="#netzwerk">Innovationsnetzwerk</a></div></div><a class="menu-link" href="#kontakt">Kontakt</a><button aria-label="Interne Werkzeuge öffnen (Anmeldung erforderlich)" class="menu-link" type="button" data-internal-open="">🔒 Intern</button></nav></div></header><div id="design-preview-note" role="note" style="position:relative;background:#ede1fc;color:#4a2b73;text-align:center;padding:9px 14px;font:600 12px/1.4 system-ui,sans-serif;border-bottom:1px solid #d5bff0">Human &amp; AI byDesign · Einheitliche Violett-Farbwelt · Version 12.14</div>
+<style id="nai-compass-v1215">
+.nai-hero-art .nai-compass-animation{display:none!important;position:absolute!important;right:10px;bottom:85px;width:clamp(150px,38%,245px);max-height:58%;z-index:4;pointer-events:none;border:2px solid #c3a2eb;border-radius:12px;box-shadow:0 9px 35px #34185b44}
+.nai-hero-art .nai-compass-animation.is-playing{display:block!important}
+.nai-hero-art .nai-replay{position:absolute!important;right:14px!important;top:14px!important;z-index:500!important;display:block!important;cursor:pointer!important;pointer-events:auto!important;touch-action:manipulation!important;min-height:48px!important;padding:11px 16px!important;min-width:163px!important;background:#60418e!important;border:2px solid #e3d1f7!important;border-radius:999px!important;color:white!important;font:800 14px/1.3 system-ui,sans-serif!important;box-shadow:0 7px 22px #27183a55!important}
+.nai-hero-art .nai-replay:hover{background:#4b3075!important}
+@media(max-width:520px){.nai-hero-art .nai-replay{right:8px!important;top:8px!important}.nai-hero-art .nai-compass-animation{right:7px!important;width:145px!important;bottom:78px!important}}
+@media(prefers-reduced-motion:reduce){.nai-hero-art .nai-compass-animation.is-playing{display:none!important}}
+</style></head><body>
+<header><div class="container top"><a class="brand" href="#home"><span class="brandmark">N</span><span>NAZAN AT <span style="color:var(--gold)">/ HUMAN &amp; AI BYDESIGN</span></span></a><button aria-controls="mainnav" aria-expanded="false" class="menu" id="menuToggle">Menü ☰</button><nav aria-label="Hauptnavigation" class="nav" id="mainnav"><a class="menu-link" href="#home">Startseite</a><div class="menu-group"><a class="menu-link" href="#ueber-mich">Über mich</a><button aria-expanded="false" aria-label="Untermenü Über mich öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Über mich" class="submenu" role="group"><a href="#ueber-mich">Profil</a><a href="#arbeitsbereiche">Arbeitsbereiche</a><a href="#ki-skills">KI-Skills</a></div></div><div class="menu-group"><a class="menu-link" href="#beratung">Beratung</a><button aria-expanded="false" aria-label="Untermenü Beratung öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Beratung" class="submenu" role="group"><a href="#philosophie">Beratungsphilosophie</a><a href="#leistungen">Leistungen</a><a href="#einstein">Einstein-Framework</a><a href="#methodenbausteine">Vertiefende Methodik</a></div></div><div class="menu-group"><a class="menu-link" href="#arbeitsproben">Projekte &amp; Arbeitsproben</a><button aria-expanded="false" aria-label="Untermenü Projekte &amp; Arbeitsproben öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Projekte &amp; Arbeitsproben" class="submenu" role="group"><a href="#arbeitsproben">Referenzprojekte &amp; Demos</a><a href="#originale">Weitere Projekte</a></div></div><div class="menu-group"><a class="menu-link" href="#wissen">Wissen &amp; Netzwerk</a><button aria-expanded="false" aria-label="Untermenü Wissen &amp; Netzwerk öffnen" class="submenu-toggle" type="button">⌄</button><div aria-label="Wissen &amp; Netzwerk" class="submenu" role="group"><a href="ki-handbuch.html">KI-Lexikon</a><a href="#netzwerk">Innovationsnetzwerk</a></div></div><a class="menu-link" href="#kontakt">Kontakt</a><button aria-label="Interne Werkzeuge öffnen (Anmeldung erforderlich)" class="menu-link" type="button" data-internal-open="">🔒 Intern</button></nav></div></header><div id="design-preview-note" role="note" style="position:relative;background:#ede1fc;color:#4a2b73;text-align:center;padding:9px 14px;font:600 12px/1.4 system-ui,sans-serif;border-bottom:1px solid #d5bff0">Human &amp; AI byDesign · Einheitliche Violett-Farbwelt · Version 12.15</div>
 <main>
 <section class="hero" id="home"><div class="container hero-grid"><div><div class="eyebrow">Nazan At · Senior Business, Finance &amp; AI Transformation Consultant</div><h1>Wirtschaft verstehen. <em>KI wirksam gestalten.</em></h1><p class="lead">Wenn Kennzahlen aus verschiedenen Systemen stammen, Abläufe Zeit kosten und Entscheidungen auf unvollständigen Informationen beruhen, fehlt Unternehmen der klare Blick auf das Wesentliche. Ich verbinde kaufmännisches Prozesswissen mit geeigneter KI, um Daten nutzbar zu machen und Entscheidungen besser vorzubereiten.</p><p class="hero-guide-note">Mein Ansatz: bestehende Prozesse verstehen, wirtschaftliche Potenziale bewerten und Lösungen im kleinen, überprüfbaren Rahmen erproben.</p><p class="muted">Business · Finance · Controlling · KI-Transformation</p><div class="actions"><a class="btn primary" href="#beratung">Beratungsangebot entdecken ↗</a><a class="btn" href="#arbeitsproben">Projekte &amp; Arbeitsproben ansehen ↗</a></div><div class="introstrip"><div><strong>20+ Jahre</strong><span>Rechnungswesen, Controlling &amp; Systemadministration</span></div><div><strong>Business × AI</strong><span>Zahlen, Prozesse und Technik zusammendenken</span></div><div><strong>Praxisnah</strong><span>Nachvollziehbare Ergebnisse statt KI-Versprechen</span></div></div></div><div aria-label="NAI – Kompassanimation erneut ansehen" class="hero-art nai-hero-art" id="naiCompassHero"><img alt="NAI als digitale Assistentin im dunkelblauen Businessanzug mit Kompass und holografischem Controlling-Dashboard" class="nai-hero-img" src="assets/inline/visual_1.webp"/><img alt="NAI präsentiert kurz einen leuchtenden Kompass" aria-hidden="true" class="nai-compass-animation" data-src="assets/inline/visual_2.gif" id="naiCompassAnim" src=""/><div class="nai-hero-caption"><strong>NAI · Your Business &amp; AI Guide</strong><span>Ihre digitale Begleitung durch Beratung, Prototypen und KI-Wissen</span><button class="btn primary" onclick="toggleNai(true)" type="button">NAI kennenlernen ↗</button></div><button aria-label="Kompassanimation erneut abspielen" class="nai-replay" id="naiReplay" title="Kompassanimation erneut abspielen" type="button">↻ Kompass</button></div></div></section><section aria-labelledby="value-title" class="value-section" id="kundennutzen">
 <div class="container">
@@ -753,7 +716,7 @@ header .nav button.menu-link:hover{color:#60418e}
 </div></div><a class="btn primary" href="#intern-hinweis" data-internal-open="">🔒 Zum internen Login ↗</a></div></div></section><div class="container content-rule" id="wissen"><div class="eyebrow">05 · Wissen &amp; Netzwerk</div><h2>Wissen zugänglich machen. Kompetenzen verbinden.</h2><p>Das KI-Lexikon bietet Definitionen; das Innovationsnetzwerk zeigt, wie fachliche Fähigkeiten projektbezogen zusammenwirken.</p><div class="preview-strip"><a class="btn" href="ki-handbuch.html">KI-Lexikon durchsuchen ↓</a><a class="btn" href="#netzwerk">Netzwerk kennenlernen ↓</a></div></div><section class="light" id="lexikon"><div class="container"><div class="sectionhead"><div><div class="eyebrow">06 · KI-Wissen kompakt</div><h2>KI-Begriffe verstehen. Zusammenhänge erkennen.</h2></div><p>Ein kleines, durchsuchbares Handbuch mit Begriffen aus meiner Wissensbasis – für den schnellen Einstieg oder die fachliche Vertiefung.</p></div><div class="handbook-entry"><div aria-hidden="true" class="handbook-symbol">⌕</div><div class="handbook-entry-content"><p class="handbook-kicker">Human &amp; AI byDesign · KI-Handbuch</p><h3>Was möchten Sie wissen?</h3><form action="ki-handbuch.html" method="get" role="search"><label class="sr-only" for="handbookHomeSearch">KI-Begriff suchen</label><div class="handbook-search"><input autocomplete="off" class="field" id="handbookHomeSearch" name="q" placeholder="Begriff suchen, z. B. RAG, Agent, API oder SLM …" type="search"/><button class="btn primary" type="submit">Im Handbuch suchen →</button></div></form><p class="fine">Alle Begriffe finden Sie im Handbuch. Die Startseite zeigt bewusst kein vollständiges Glossar.</p><div class="preview-strip"><a class="btn" href="ki-handbuch.html">KI-Handbuch öffnen ↗</a><a class="btn" href="ki-handbuch.html?cat=Governance%20%26%20Sicherheit">Verantwortungsvolle KI entdecken ↗</a></div></div></div></div></section>
 <section id="netzwerk"><div class="container"><div class="sectionhead"><div><div class="eyebrow">07 · KI-Innovationsnetzwerk</div><h2>Kompetenzen verbinden. Gemeinsam Wirkung erzeugen.</h2></div><p>Eine vernetzte Projektorganisation: Die Teamzusammenstellung folgt dem Kundenproblem, nicht einer starren Tool-Landschaft.</p></div><div class="grid g3"><article class="card"><small>Business &amp; Finance</small><h3>Wirtschaft, Prozesse und Steuerung</h3><p>Fachkonzept, Rechnungswesen, Controlling, Kennzahlen und betriebswirtschaftliche Bewertung.</p></article><article class="card"><small>Technology &amp; Engineering</small><h3>KI, Daten und Integration</h3><p>Architektur, Prototyping, Schnittstellen, Automatisierung, Datenflüsse, Sicherheit und technische Qualität.</p></article><article class="card"><small>People &amp; Governance</small><h3>Menschen, Organisation und Verantwortung</h3><p>Leadership, Befähigung, Kommunikation, Qualitätssicherung und fachlich zuständige Risiko- und Rechtsprüfung.</p></article></div><div class="callout"><h3>So arbeiten wir im Kundenprojekt zusammen</h3><p>Der Fachbereich definiert Anforderungen und prüft den Nutzen. Technologieverantwortliche entwerfen und bauen. Governance-Verantwortliche bewerten Risiken. Die Entscheidung über Freigaben bleibt bei den dafür benannten Menschen.</p><p class="fine">Individuelle Teamprofile und personenbezogene Angaben werden nur nach ausdrücklicher Freigabe veröffentlicht.</p></div></div></section>
 <section class="soft" id="kontakt"><div class="container"><div class="sectionhead contact-head"><div><div class="eyebrow">08 · Kontakt</div><h2>Im Gespräch entstehen neue Perspektiven.</h2></div><p>Sie möchten sich austauschen, eine Frage stellen oder mehr über meine Arbeit erfahren? Ich freue mich über Ihre Kontaktaufnahme.</p></div><div class="contact-simple"><div><span class="contact-kicker">Kontakt aufnehmen</span><p>Ein persönlicher Austausch ist oft der beste Anfang. Schreiben Sie mir gerne – ganz unverbindlich und ohne vorbereitete Projektanfrage.</p><p class="fine">Die geschäftlichen Kontaktdaten werden vor der Veröffentlichung ergänzt.</p></div><div aria-hidden="true" class="contact-symbol">↗</div></div><p class="fine">Impressum und Datenschutzerklärung finden Sie im Footer. Diese Website ist noch ein unveröffentlichter Entwurf.</p></div></section>
-<section id="intern-hinweis" style="padding:22px 0;background:#f6f1fb;color:#291a3c"><div class="container" style="max-width:1170px"><p style="margin:0;color:#49365f"><strong>Interner Bereich:</strong> Die privaten Werkzeuge bleiben auf einem geschützten Server. Auf der lokalen Serverversion kannst du sie direkt hier nach Anmeldung bedienen. Für den Onlinezugang muss dieser Server separat mit HTTPS bereitgestellt werden.</p></div></section></main><footer class="footer"><div class="container"><div><b style="color:var(--gold)">NAZAN AT · HUMAN &amp; AI BYDESIGN</b><br/>Business · Finance · verantwortungsvolle KI-Transformation</div><div>Homepage · Version 12.14 · 08.11.2026<br/>Lokale Gesamtversion · nicht veröffentlicht</div><div class="legal-footer"><nav aria-label="Rechtliche Informationen" class="legal-links"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutzerklärung</a></nav><p class="legal-warning">Rechtstexte sind Entwürfe. Vor Veröffentlichung Angaben ergänzen und prüfen.</p></div></div></footer>
+<section id="intern-hinweis" style="padding:22px 0;background:#f6f1fb;color:#291a3c"><div class="container" style="max-width:1170px"><p style="margin:0;color:#49365f"><strong>Interner Bereich:</strong> Die privaten Werkzeuge bleiben auf einem geschützten Server. Auf der lokalen Serverversion kannst du sie direkt hier nach Anmeldung bedienen. Für den Onlinezugang muss dieser Server separat mit HTTPS bereitgestellt werden.</p></div></section></main><footer class="footer"><div class="container"><div><b style="color:var(--gold)">NAZAN AT · HUMAN &amp; AI BYDESIGN</b><br/>Business · Finance · verantwortungsvolle KI-Transformation</div><div>Homepage · Version 12.15 · 08.11.2026<br/>Lokale Gesamtversion · nicht veröffentlicht</div><div class="legal-footer"><nav aria-label="Rechtliche Informationen" class="legal-links"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutzerklärung</a></nav><p class="legal-warning">Rechtstexte sind Entwürfe. Vor Veröffentlichung Angaben ergänzen und prüfen.</p></div></div></footer>
 
 <div id="privateWorkspace" role="dialog" aria-modal="true" aria-labelledby="wsTitle" hidden>
  <div class="workspace-dialog">
@@ -890,38 +853,7 @@ document.querySelectorAll('#mainnav .submenu a').forEach(a=>a.addEventListener('
  document.querySelectorAll('.menu-group.submenu-open').forEach(x=>{x.classList.remove('submenu-open');x.querySelector('.submenu-toggle').setAttribute('aria-expanded','false')});
 }));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.menu-group.submenu-open').forEach(x=>{x.classList.remove('submenu-open');x.querySelector('.submenu-toggle').setAttribute('aria-expanded','false')})});
-</script><script>(function(){const params=new URLSearchParams(location.search);const id=params.get('demo');if(!id)return;const start=()=>{const btn=document.querySelector('[data-demo="'+CSS.escape(id)+'"]');if(!btn)return;btn.click();};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();})();</script><script id="nai-compass-click-script-v1213">
-/* NAI Kompass: starts only on button click, plays once and disappears. */
-(function(){
- const hero=document.getElementById('naiCompassHero');
- const img=document.getElementById('naiCompassAnim');
- const replay=document.getElementById('naiReplay');
- if(!hero||!img||!replay)return;
- const url=img.getAttribute('data-src')||'assets/inline/visual_2.gif';
- let stopTimer=null, count=0;
- img.removeAttribute('src');
- img.classList.remove('is-playing');
- replay.textContent='▶ Kompass abspielen';
- replay.setAttribute('aria-label','NAI-Kompassanimation einmal abspielen');
- replay.setAttribute('title','Kompassanimation einmal abspielen');
- function playCompass(){
-   if(stopTimer){clearTimeout(stopTimer);stopTimer=null;}
-   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      replay.textContent='▶ Kompass abspielen';return;
-   }
-   img.classList.remove('is-playing');
-   img.removeAttribute('src');
-   count++;
-   // Change URL to restart at frame 1, but do not loop forever.
-   img.src=url+(url.indexOf('?')===-1?'?':'&')+'play='+count;
-   img.classList.add('is-playing');
-   replay.textContent='↻ Kompass erneut';
-   // Native GIF length 6 x 160ms=960ms, plus slight rendering buffer.
-   stopTimer=setTimeout(()=>{img.classList.remove('is-playing');img.removeAttribute('src');stopTimer=null;},1200);
- }
- replay.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();playCompass();});
-})();
-</script><script id="private-workspace-script-v1214">
+</script><script>(function(){const params=new URLSearchParams(location.search);const id=params.get('demo');if(!id)return;const start=()=>{const btn=document.querySelector('[data-demo="'+CSS.escape(id)+'"]');if(!btn)return;btn.click();};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();})();</script><script id="private-workspace-script-v1214">
 (()=>{
   'use strict';
   const dialog=document.getElementById('privateWorkspace');
@@ -991,4 +923,23 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelect
   });
 })();
 </script>
-</body></html>
+<script id="nai-compass-v1215-script">
+(function(){
+ const btn=document.getElementById('naiReplay'),img=document.getElementById('naiCompassAnim');
+ if(!btn||!img)return;
+ const base=img.getAttribute('data-src')||'assets/inline/visual_2.gif';
+ let timer=null,n=0;
+ btn.textContent='▶ Kompass starten';
+ img.classList.remove('is-playing');img.removeAttribute('src');
+ btn.addEventListener('click',function(ev){
+  ev.preventDefault();ev.stopPropagation();
+  if(timer){clearTimeout(timer);timer=null}
+  img.classList.remove('is-playing');img.removeAttribute('src');
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  n+=1;img.src=base+'?v=1215&play='+n;
+  img.classList.add('is-playing');
+  btn.textContent='↻ Kompass erneut';
+  timer=setTimeout(function(){img.classList.remove('is-playing');img.removeAttribute('src');timer=null},3200);
+ },false);
+})();
+</script></body></html>
