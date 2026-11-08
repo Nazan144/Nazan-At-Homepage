@@ -1,5 +1,7 @@
-# Human & AI byDesign – persönliche Homepage
+# Human & AI byDesign
 
-Persönliches Portfolio von Nazan At. Öffentliche Arbeitsproben und Demonstrationen mit Beispiel- oder Testdaten. Interne Werkzeuge sind nicht Teil dieses Repositories.
+Persoenliche Portfolio-Homepage, Stand 12.11 Clean. Oeffentliche Demo-Arbeitsproben; interne Werkzeuge gehoeren nicht zu diesem Repository.
 
-Hinweis: Impressum und Datenschutzerklärung sind Entwurfsfassungen und müssen vor einem regulären öffentlichen Livebetrieb vervollständigt werden.
+GitHub Pages: Settings > Pages > Build and deployment > Deploy from a branch > main / (root).
+
+Hinweis: Impressum und Datenschutz sind Vorlagen, die vor regulärem Betrieb um die konkreten Pflichtangaben ergaenzt werden muessen.

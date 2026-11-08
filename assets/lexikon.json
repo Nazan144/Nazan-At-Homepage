@@ -1,0 +1,758 @@
+{
+  "generated": "2026-11-08",
+  "description": "Redaktionell vereinfachte Auswahl aus verknüpften Notion-Wissensinhalten; keine Live-Synchronisation, nicht fachlich verifiziert.",
+  "entries": [
+    {
+      "term": "Agentic Economy",
+      "category": "Zukunft & Innovation",
+      "definition": "Zukunftsbild einer Wirtschaft mit mehr KI-Agenten in Arbeits- und Geschäftsprozessen.",
+      "example": "Agenten bereiten Recherche, Service und Analysen vor.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "AGI",
+      "category": "Zukunft & Innovation",
+      "definition": "Bezeichnung für die umstrittene Vorstellung breit allgemein einsetzbarer KI-Fähigkeiten.",
+      "example": "Forschung diskutiert Chancen, Risiken und Kontrollfragen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "AI Governance",
+      "category": "Governance & Sicherheit",
+      "definition": "Regeln, Rollen und Kontrollen für Entwicklung, Beschaffung und Betrieb von KI.",
+      "example": "Jeder KI-Anwendungsfall erhält Verantwortliche und Prüfpflichten.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "API",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Definierte Schnittstelle, über die Anwendungen Daten und Funktionen austauschen.",
+      "example": "Ein Vertriebsassistent ruft freigegebene Auftragsdaten ab.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "API-Key",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Geheimer Schlüssel zur Identifizierung oder Authentifizierung bei einer API.",
+      "example": "Zugriffe werden über geschützte Schlüssel verwaltet.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Attention",
+      "category": "Sprachmodelle",
+      "definition": "Mechanismus, der relevante Beziehungen zwischen Tokens in einer Eingabe gewichtet.",
+      "example": "Ein Modell erkennt, welche Textteile für eine Frage wichtig sind.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Automatisierung",
+      "category": "Workflows & Agenten",
+      "definition": "Technische Ausführung wiederkehrender Schritte anhand fester Regeln oder unterstützender KI.",
+      "example": "Eine eingehende Anfrage wird automatisch kategorisiert.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Backpropagation",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Verfahren, das Lernfehler durch ein neuronales Netz zurückführt, um Gewichte zu aktualisieren.",
+      "example": "Grundlage vieler Trainingsverfahren neuronaler Netze.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Benchmark",
+      "category": "Qualität & Evaluation",
+      "definition": "Vergleich anhand standardisierter Tests oder Metriken.",
+      "example": "Modelle werden auf einer definierten Aufgabenklasse verglichen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Business Case",
+      "category": "Business & Consulting",
+      "definition": "Bewertung von erwarteten Nutzen, Kosten, Risiken und Alternativen einer Maßnahme.",
+      "example": "Ein Pilot wird vor Investitionsentscheidung wirtschaftlich bewertet.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Cloud",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Bereitstellung von IT-Leistungen über entfernte Infrastruktur nach einem Dienstmodell.",
+      "example": "Ein KI-Pilot wird auf einem geschützten Cloud-Server betrieben.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Cloud-VPS",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Virtueller Server in einer Cloud-Umgebung, auf dem eigene Software betrieben werden kann.",
+      "example": "Ein Pilot läuft mit Docker Compose auf einem VPS.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Compute",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Verfügbare Rechenleistung und die dafür benötigten Ressourcen.",
+      "example": "Ein Business Case bewertet Rechenkosten pro Anwendungsfall.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "CPU",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Universeller Prozessor, der auch KI-Aufgaben ausführen kann.",
+      "example": "Kleine Inferenzaufgaben lassen sich teils ohne GPU betreiben.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Daten-Governance",
+      "category": "Governance & Sicherheit",
+      "definition": "Regeln und Zuständigkeiten für den verantwortlichen Umgang mit Daten.",
+      "example": "Zugriffsrechte und Verantwortlichkeiten werden dokumentiert.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Datenqualität",
+      "category": "Daten & Wissen",
+      "definition": "Grad, in dem Daten korrekt, vollständig, konsistent und zweckgeeignet sind.",
+      "example": "Doppelte Kundenstammsätze werden vor einem KI-Pilot bereinigt.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Datenschutz",
+      "category": "Governance & Sicherheit",
+      "definition": "Schutz personenbezogener Daten durch rechtliche und organisatorische Maßnahmen.",
+      "example": "Für einen Pilot werden Datensparsamkeit und Zugriff geprüft.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Debugging",
+      "category": "Qualität & Evaluation",
+      "definition": "Systematisches Suchen und Beheben von Fehlerursachen.",
+      "example": "Ein fehlerhafter Workflow wird Schritt für Schritt untersucht.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Deep Learning",
+      "category": "Grundlagen",
+      "definition": "Teilbereich des maschinellen Lernens mit mehrschichtigen neuronalen Netzen.",
+      "example": "Bildanalyse identifiziert auffällige Produktfotos.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Diffusionsmodell",
+      "category": "Generative KI",
+      "definition": "Generatives Verfahren, das schrittweise aus Rauschen strukturierte Inhalte erzeugen kann.",
+      "example": "Text-zu-Bild-Generatoren können auf Diffusionsverfahren beruhen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Distillation",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Training eines kleineren Modells mit Hilfe der Ausgaben oder Verhaltensmuster eines größeren Modells.",
+      "example": "Für Routineklassifikation wird eine sparsamere Variante geprüft.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Edge AI",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Ausführung von KI nahe an Sensoren, Geräten oder Datenquellen.",
+      "example": "Eine Lagerkamera erkennt Beschädigungen vor Ort.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "EDI",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Standardisierter elektronischer Austausch von Geschäftsdokumenten zwischen Systemen.",
+      "example": "Bestellungen werden zwischen Handelspartnern übertragen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Embedding",
+      "category": "Daten & Wissen",
+      "definition": "Numerische Darstellung von Inhalten, die Bedeutungsähnlichkeiten vergleichbar macht.",
+      "example": "Ähnliche Dokumente werden über semantische Suche gefunden.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Endpoint",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Konkrete Adresse einer API-Funktion oder Ressource.",
+      "example": "Ein Endpoint liefert den Status eines Kundenauftrags.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Erklärbarkeit",
+      "category": "Governance & Sicherheit",
+      "definition": "Nachvollziehbarkeit, welche Faktoren zu einer Modellentscheidung beitragen können.",
+      "example": "Eine Warnmeldung erläutert verfügbare Daten und Grenzen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "ERP",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Unternehmenssystem zur Verwaltung zentraler kaufmännischer und logistischer Prozesse.",
+      "example": "Aufträge, Artikel und Buchungen werden in einem System verwaltet.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Evaluation (Eval)",
+      "category": "Qualität & Evaluation",
+      "definition": "Systematische Bewertung anhand vorab festgelegter Testfälle und Kriterien.",
+      "example": "Ein Assistent wird mit richtigen und schwierigen Eingaben geprüft.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Fairness",
+      "category": "Governance & Sicherheit",
+      "definition": "Anforderung, unzulässige Benachteiligung durch Systementscheidungen zu vermeiden.",
+      "example": "Ein KI-gestützter Prozess wird auf diskriminierende Muster untersucht.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Few-Shot Prompting",
+      "category": "Prompting",
+      "definition": "Vorgehen, bei dem einige Beispiele den gewünschten Antwortstil oder die Aufgabe verdeutlichen.",
+      "example": "Zwei Beispiele zeigen die korrekte Kategorisierung von Belegen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Fine-Tuning",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Gezielte Anpassung eines vortrainierten Modells an zusätzliche Daten oder Aufgaben.",
+      "example": "Ein Modell wird für eine bestimmte Klassifikationsaufgabe nachtrainiert.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Forecast",
+      "category": "Business & Consulting",
+      "definition": "Vorausschauende Schätzung künftiger Entwicklungen auf Basis von Annahmen und Daten.",
+      "example": "Das Controlling aktualisiert die Liquiditätsvorschau.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Frontier-Modell",
+      "category": "Zukunft & Innovation",
+      "definition": "Besonders leistungsfähiges Modell nahe der jeweiligen technischen Leistungsgrenze.",
+      "example": "Modellwahl berücksichtigt Fähigkeiten, Risiken und Kosten.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Generative KI",
+      "category": "Generative KI",
+      "definition": "KI-Verfahren, die neue Texte, Bilder, Audio oder weitere Inhalte erzeugen.",
+      "example": "Aus Daten wird ein Berichtsentwurf erstellt.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "GPU",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Prozessor mit vielen parallelen Recheneinheiten, häufig für KI-Training und Inferenz eingesetzt.",
+      "example": "Hosting-Kosten hängen von notwendiger GPU-Leistung ab.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Halluzination",
+      "category": "Qualität & Evaluation",
+      "definition": "Plausibel klingende, aber nicht verlässlich belegte oder falsche Modellantwort.",
+      "example": "Quellenangaben werden vor der Freigabe überprüft.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Hugging Face",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Plattform für Modelle, Datensätze und KI-Werkzeuge.",
+      "example": "Teams vergleichen veröffentlichte Modelle und Datensätze.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Human-in-the-Loop",
+      "category": "Governance & Sicherheit",
+      "definition": "Menschliche Überprüfung oder Freigabe an definierten Entscheidungspunkten.",
+      "example": "Eine Bestellung wird erst nach Prüfung ausgelöst.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Hybrid Cloud",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Kombination mehrerer Betriebsumgebungen, etwa eigener IT und Cloud-Diensten.",
+      "example": "Interne Daten bleiben lokal, KI-API ist extern angebunden.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Inferenz",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Anwendung eines bereits trainierten Modells auf neue Eingaben.",
+      "example": "Ein Assistent beantwortet eine aktuelle Frage.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Jailbreaking",
+      "category": "Governance & Sicherheit",
+      "definition": "Versuch, Sicherheits- oder Nutzungsbeschränkungen eines Systems zu umgehen.",
+      "example": "Ein Modell wird mit unerlaubten Eingaben auf Robustheit getestet.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "JSON",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Textformat zur strukturierten Übertragung von Daten.",
+      "example": "Eine ERP-Schnittstelle liefert eine Bestellung als JSON-Objekt.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "KI-Agent",
+      "category": "Workflows & Agenten",
+      "definition": "System, das innerhalb definierter Rechte Ziele, Arbeitsschritte und Werkzeuge koordiniert.",
+      "example": "Ein Agent bereitet einen Analysebericht zur Freigabe vor.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "KI-Ethik",
+      "category": "Governance & Sicherheit",
+      "definition": "Betrachtung von Fairness, Sicherheit, Auswirkungen und menschlichen Werten beim KI-Einsatz.",
+      "example": "Ein Anwendungsfall wird auf Benachteiligungsrisiken geprüft.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "KI-Loop",
+      "category": "Workflows & Agenten",
+      "definition": "Wiederholter Ablauf aus Bearbeitung, Prüfen und Verbessern bis zum festgelegten Endpunkt.",
+      "example": "Ein Prompt wird nach einer Evaluation erneut angepasst.",
+      "source": "https://app.notion.com/p/3fe5a657be0081878625c4d20112c51d",
+      "alias": ""
+    },
+    {
+      "term": "Knowledge Base",
+      "category": "Daten & Wissen",
+      "definition": "Gepflegter Bestand von Dokumenten, Fakten und Regeln für die Wissensnutzung.",
+      "example": "Ein Second Brain bündelt freigegebene Arbeitsanweisungen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Kontextfenster",
+      "category": "Sprachmodelle",
+      "definition": "Maximale Menge an Tokens, die ein Modell in einem Verarbeitungsschritt berücksichtigen kann.",
+      "example": "Lange Dokumente müssen gegebenenfalls in Abschnitte geteilt werden.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "KPI",
+      "category": "Business & Consulting",
+      "definition": "Kennzahl zur Bewertung eines Ziels oder Prozesses.",
+      "example": "Bearbeitungszeit und Fehlerquote werden gemessen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Künstliche Intelligenz (KI)",
+      "category": "Grundlagen",
+      "definition": "Sammelbegriff für Systeme, die Aufgaben wie Erkennen, Vorhersagen oder Sprachverarbeitung unterstützen.",
+      "example": "KI ordnet eingehende Kundenanfragen nach ihrem Anliegen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "LLM (Large Language Model)",
+      "category": "Sprachmodelle",
+      "definition": "Großes Sprachmodell, das Sprache anhand gelernter Muster verarbeitet und erzeugt.",
+      "example": "Ein Assistent erstellt Entwürfe für Besprechungsnotizen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Machine Learning (ML)",
+      "category": "Grundlagen",
+      "definition": "Verfahren, bei denen Modelle Muster aus Trainingsdaten lernen, statt jede Regel einzeln zu programmieren.",
+      "example": "Ein Modell erkennt wahrscheinliche Bestandsengpässe aus historischen Daten.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Monitoring",
+      "category": "Qualität & Evaluation",
+      "definition": "Fortlaufende Beobachtung eines Systems und seiner Kennzahlen im Betrieb.",
+      "example": "Antwortqualität und Fehlerraten werden regelmäßig geprüft.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Multi-Agenten-System",
+      "category": "Workflows & Agenten",
+      "definition": "Mehrere spezialisierte Agenten bearbeiten Teilaufgaben und übergeben Ergebnisse.",
+      "example": "Recherche, Analyse und Qualitätsprüfung werden aufgeteilt.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Multimodalität",
+      "category": "Generative KI",
+      "definition": "Verarbeitung mehrerer Medienarten wie Text, Bild und Audio durch ein System.",
+      "example": "Ein Assistent verbindet Textbeschreibung mit einem Rechnungsbild.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "MVP",
+      "category": "Business & Consulting",
+      "definition": "Kleinste nutzbare Version eines Produkts zur Prüfung wesentlicher Annahmen.",
+      "example": "Ein Commander testet Priorisierung mit fiktiven Daten.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "n8n",
+      "category": "Workflows & Agenten",
+      "definition": "Plattform zur Verbindung und Automatisierung von Anwendungen und Prozessschritten.",
+      "example": "ERP-Daten werden in einem kontrollierten Workflow geprüft.",
+      "source": "https://app.notion.com/p/3fe5a657be0081878625c4d20112c51d",
+      "alias": ""
+    },
+    {
+      "term": "Neuronales Netz",
+      "category": "Grundlagen",
+      "definition": "Rechenmodell aus miteinander verknüpften Verarbeitungseinheiten, deren Gewichte im Training angepasst werden.",
+      "example": "Ein Netz lernt Muster aus großen Datenbeständen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "No-Code",
+      "category": "Workflows & Agenten",
+      "definition": "Erstellung von Anwendungen und Automationen überwiegend über grafische Werkzeuge.",
+      "example": "Ein Fachbereich skizziert einen Prozess in einem Workflow-Tool.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "On-Device AI",
+      "category": "Schnittstellen & Cloud",
+      "definition": "KI-Verarbeitung direkt auf einem Endgerät statt auf einem entfernten Server.",
+      "example": "Ein Mobilgerät wertet Sprache lokal aus.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "On-Premises",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Betrieb von Hardware und Software in der eigenen Unternehmensumgebung.",
+      "example": "Ein lokales Modell verarbeitet interne Dokumente.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "One-Person-Unicorn",
+      "category": "Zukunft & Innovation",
+      "definition": "These, dass eine Einzelperson mithilfe von KI ein sehr großes Unternehmen aufbauen könnte.",
+      "example": "Ein Solo-Unternehmen automatisiert Teilprozesse, behält aber Verantwortung.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Open Source",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Software, deren Quellcode unter einer offenen Lizenz bereitsteht.",
+      "example": "Ein Unternehmen prüft Rechte und Wartung einer offenen Lösung.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Open Weights",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Bereitstellung trainierter Modellgewichte, nicht automatisch sämtlicher Trainingsdaten oder des Codes.",
+      "example": "Ein Modell wird vor der lokalen Nutzung auf Lizenzfragen geprüft.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Parameter",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Im Training angepasste interne Werte eines Modells.",
+      "example": "Bei einem Modellvergleich spielen Modellgröße und Betriebskosten eine Rolle.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Physical AI",
+      "category": "Zukunft & Innovation",
+      "definition": "KI-Systeme, die Wahrnehmung und Handlungen in der physischen Welt verbinden.",
+      "example": "Ein Roboter bewegt Waren unter Sicherheitsregeln.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "PoC (Proof of Concept)",
+      "category": "Business & Consulting",
+      "definition": "Begrenzter Machbarkeitstest einer Idee oder Technik.",
+      "example": "Eine Schnittstelle wird mit anonymisierten Daten erprobt.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Pretraining",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Breites Vortraining eines Modells auf umfangreichen Datenbeständen.",
+      "example": "Vortraining vermittelt allgemeine Sprachmuster.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Private Cloud",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Cloud-Umgebung mit exklusiv zugeordneten Ressourcen und eigener Kontrolle.",
+      "example": "Ein Unternehmen betreibt sensible Anwendungen in einer abgeschirmten Umgebung.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Prompt",
+      "category": "Prompting",
+      "definition": "Eingabe oder Anweisung, mit der eine KI-Aufgabe beschrieben wird.",
+      "example": "Ein Bericht erhält Zielgruppe, Struktur und Prüfkriterien.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Prompt Engineering",
+      "category": "Prompting",
+      "definition": "Systematisches Entwickeln, Testen und Verbessern von KI-Anweisungen.",
+      "example": "Ein Auswertungs-Prompt wird anhand von Testfällen optimiert.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Prompt Injection",
+      "category": "Governance & Sicherheit",
+      "definition": "Manipulationsversuch über Inhalte, die ein KI-System entgegen seinen Regeln beeinflussen sollen.",
+      "example": "Ein fremdes Dokument enthält eine unerlaubte Handlungsanweisung.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "QA (Quality Assurance)",
+      "category": "Qualität & Evaluation",
+      "definition": "Maßnahmen zur Sicherung und Überprüfung von Qualität und Zuverlässigkeit.",
+      "example": "Ein Agent markiert fehlende Quellen vor Veröffentlichung.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Quantisierung",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Verringerung der Zahlenpräzision von Modellgewichten zur Senkung des Speicher- und Rechenbedarfs.",
+      "example": "Ein kleineres Modell läuft auf begrenzter Hardware.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "RAG (Retrieval-Augmented Generation)",
+      "category": "Daten & Wissen",
+      "definition": "Verfahren, das vor der Antwort passende Informationen aus einer Wissensquelle abruft.",
+      "example": "Ein Assistent beantwortet Fragen aus freigegebenen Unternehmensdokumenten.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Responsible AI",
+      "category": "Governance & Sicherheit",
+      "definition": "Gestaltung und Nutzung von KI mit Verantwortung, Transparenz, Kontrolle und Risikobewusstsein.",
+      "example": "Ein Pilot definiert Freigaben und Nachvollziehbarkeit.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "REST",
+      "category": "Schnittstellen & Cloud",
+      "definition": "Verbreiteter Architekturstil für Webschnittstellen.",
+      "example": "Eine Anwendung fragt strukturierte Informationen über HTTP ab.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Retrieval",
+      "category": "Daten & Wissen",
+      "definition": "Abruf relevanter Informationen aus einem Datenbestand.",
+      "example": "Die Wissenssuche findet die passende Richtlinie.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Sandbox Escape",
+      "category": "Governance & Sicherheit",
+      "definition": "Ausbruch aus einer vorgesehenen isolierten Ausführungsumgebung.",
+      "example": "Zugriffsbeschränkungen werden bei Tool-Ausführung geprüft.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Skill",
+      "category": "Workflows & Agenten",
+      "definition": "Wiederverwendbare Arbeitsanweisung mit Eingaben, Schritten und Qualitätskriterien.",
+      "example": "Ein Qualitätsskill prüft neue Wissenseinträge vor Freigabe.",
+      "source": "https://app.notion.com/p/3fe5a657be0081878625c4d20112c51d",
+      "alias": ""
+    },
+    {
+      "term": "SLM (Small Language Model)",
+      "category": "Sprachmodelle",
+      "definition": "Kleineres Sprachmodell mit oft geringerem Ressourcenbedarf, teils für spezialisierte Aufgaben geeignet.",
+      "example": "Ein lokales Modell klassifiziert interne Dokumente.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Synthetische Medien",
+      "category": "Generative KI",
+      "definition": "Künstlich erzeugte oder veränderte Bild-, Audio- und Videoinhalte.",
+      "example": "Marketinggrafiken benötigen Qualitäts- und Rechteprüfung.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "System Prompt",
+      "category": "Prompting",
+      "definition": "Übergeordnete Anweisung, die Verhalten und Grenzen einer Anwendung festlegt.",
+      "example": "Ein Assistenzsystem erhält klare Regeln zum Umgang mit Unsicherheit.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Token",
+      "category": "Sprachmodelle",
+      "definition": "Kleine Verarbeitungseinheit eines Sprachmodells, etwa ein Wortteil oder Zeichenfolge.",
+      "example": "Tokenmengen beeinflussen API-Nutzung und Kosten.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Tokenökonomie",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Wirtschaftliche Betrachtung von Tokenverbrauch, Modellwahl und Inferenzkosten.",
+      "example": "Ein Pilot kalkuliert Antwortvolumen und Kosten pro Vorgang.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "TPU",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Spezieller KI-Beschleuniger für bestimmte Tensorberechnungen.",
+      "example": "Relevant beim Vergleich von Cloud- und Trainingsinfrastruktur.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Training",
+      "category": "Modelle & Rechenleistung",
+      "definition": "Phase, in der ein Modell seine Parameter anhand von Beispielen und einer Lernaufgabe anpasst.",
+      "example": "Ein Klassifikator wird mit bereits zugeordneten Belegen trainiert.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Trainingsdaten",
+      "category": "Daten & Wissen",
+      "definition": "Beispiele und Informationen, mit denen ein Modell trainiert wird; Qualität und Nutzungsrechte sind entscheidend.",
+      "example": "Fachlich geprüfte Belegdaten verbessern die Ausgangslage eines Lernprojekts.",
+      "source": "https://app.notion.com/p/3f85a657be00813ea041c810a906e658",
+      "alias": ""
+    },
+    {
+      "term": "Transformer",
+      "category": "Sprachmodelle",
+      "definition": "Modellarchitektur, die Zusammenhänge zwischen Eingabeteilen durch Attention-Verfahren verarbeitet.",
+      "example": "Grundtechnik vieler moderner Sprachmodelle.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Use Case",
+      "category": "Business & Consulting",
+      "definition": "Konkreter Anwendungsfall mit Ziel, Nutzern, Eingaben und erwarteten Ergebnissen.",
+      "example": "Automatisierte Vorbereitung offener Kundenrückfragen.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Vektordatenbank",
+      "category": "Daten & Wissen",
+      "definition": "Speicher- und Suchsystem für Vektorrepräsentationen, etwa Embeddings.",
+      "example": "Passende Wissensabschnitte werden zur Anfrage gefunden.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Wissensmanagement",
+      "category": "Daten & Wissen",
+      "definition": "Strukturierte Erfassung, Pflege, Verknüpfung und Nutzung von Wissen.",
+      "example": "Projektwissen bleibt auch bei Personalwechsel auffindbar.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Workflow",
+      "category": "Workflows & Agenten",
+      "definition": "Definierte Abfolge von Arbeitsschritten einschließlich Ausnahmen und Freigaben.",
+      "example": "Ein Prüfbeleg durchläuft Erfassung, Kontrolle und Freigabe.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "World Model",
+      "category": "Zukunft & Innovation",
+      "definition": "Modell, das vereinfacht abbildet, wie eine Umgebung funktioniert und sich verändert.",
+      "example": "Ein Lagerroboter plant sichere Wege auf Basis eines Umgebungsmodells.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    },
+    {
+      "term": "Zero-Shot Prompting",
+      "category": "Prompting",
+      "definition": "Bearbeitung einer Aufgabe ohne zusätzlich vorgegebene Lösungsbeispiele.",
+      "example": "Ein Modell ordnet eine Anfrage anhand einer klaren Beschreibung ein.",
+      "source": "https://app.notion.com/p/3e85a657be0081be90f6f9861bb0e3bf",
+      "alias": ""
+    }
+  ]
+}

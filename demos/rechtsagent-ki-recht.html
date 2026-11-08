@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>Rechtsagent KI-Recht</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --paper:#F5F6F2; --surface:#FFFFFF; --ink:#18302A; --ink-soft:#4E5F59; --rule:#D3D9D2;
+  --accent:#2C6658; --accent-ink:#FFFFFF; --mark:#F3DA55; --mark-ink:#18302A; --alert:#A9402C; --soon:#8A6A12;
+  --user-bg:#E6ECE7; --focus:#2C6658;
+  --serif:"Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans:"Public Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111916; --surface:#18221E; --ink:#E4E9E4; --ink-soft:#A4B1AB; --rule:#2C3934;
+    --accent:#7FC0AE; --accent-ink:#0F1A16; --mark:rgba(243,218,85,.30); --mark-ink:#F4EFD0; --alert:#E58A74; --soon:#E1C36A;
+    --user-bg:#22302B; --focus:#7FC0AE; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111916; --surface:#18221E; --ink:#E4E9E4; --ink-soft:#A4B1AB; --rule:#2C3934;
+  --accent:#7FC0AE; --accent-ink:#0F1A16; --mark:rgba(243,218,85,.30); --mark-ink:#F4EFD0; --alert:#E58A74; --soon:#E1C36A;
+  --user-bg:#22302B; --focus:#7FC0AE; color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%; scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0; height:100%; background:var(--paper); color:var(--ink); font:16px/1.5 var(--sans)}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--paper)}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:3px}
+button{font:inherit; cursor:pointer}
+
+.app{display:grid; grid-template-columns:minmax(0,1fr) 320px; grid-template-rows:auto minmax(0,1fr); height:100%; max-width:1180px; margin:0 auto}
+header{grid-column:1/-1; display:flex; align-items:baseline; gap:1rem; padding:1.1rem 1.5rem .9rem; border-bottom:1px solid var(--rule)}
+.brand{font:600 1.45rem/1.1 var(--serif); letter-spacing:-.01em; margin:0}
+.brand .sec{font-weight:400; color:var(--accent); margin-right:.35rem}
+.stand{color:var(--ink-soft); font-size:.85rem}
+.hdr-actions{margin-left:auto}
+.ghost{background:none; border:1px solid var(--rule); color:var(--ink); border-radius:6px; padding:.35rem .7rem; font-size:.875rem}
+.ghost:hover{border-color:var(--accent)}
+
+main{display:flex; flex-direction:column; min-height:0; border-right:1px solid var(--rule)}
+#log{flex:1; overflow-y:auto; padding:1.5rem 1.5rem 1rem}
+.empty{max-width:62ch}
+.empty h2{font:500 2rem/1.15 var(--serif); margin:.5rem 0 .75rem; letter-spacing:-.015em}
+.empty p{color:var(--ink-soft); margin:0 0 1.25rem}
+.starters{list-style:none; padding:0; margin:0; border-top:1px solid var(--rule)}
+.starters li{border-bottom:1px solid var(--rule)}
+.starters button{display:block; width:100%; text-align:left; background:none; border:0; padding:.8rem .2rem; color:var(--ink); font:1.05rem/1.4 var(--serif)}
+.starters button:hover{color:var(--accent)}
+
+.msg{max-width:68ch; margin:0 0 1.5rem}
+.msg.user{margin-left:auto; background:var(--user-bg); padding:.7rem 1rem; border-radius:10px 10px 2px 10px; width:fit-content; max-width:52ch; white-space:pre-wrap}
+.msg.bot{font:1.05rem/1.62 var(--serif)}
+.msg.bot h3,.msg.bot h4{font:600 1rem/1.3 var(--sans); margin:1.2rem 0 .35rem}
+.msg.bot p{margin:0 0 .75rem}
+.msg.bot ul,.msg.bot ol{margin:0 0 .75rem; padding-left:1.3rem}
+.msg.bot li{margin:.15rem 0}
+.msg.bot strong{font-weight:600}
+.tbl{overflow-x:auto; margin:.25rem 0 1rem}
+.msg.bot table{border-collapse:collapse; font:.875rem/1.4 var(--sans); min-width:100%}
+.msg.bot th,.msg.bot td{text-align:left; padding:.4rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
+.msg.bot th{font-weight:600}
+.thinking{color:var(--ink-soft); font:italic 1rem var(--serif)}
+.note{font:.85rem/1.4 var(--sans); color:var(--ink-soft); margin-top:.4rem}
+.note.err{color:var(--alert)}
+
+mark.cite{background:var(--mark); color:var(--mark-ink); padding:0 .15em; border-radius:2px; box-decoration-break:clone; -webkit-box-decoration-break:clone}
+button.ref{background:var(--mark); color:var(--mark-ink); border:0; padding:0 .25em; border-radius:2px; font:600 .82em var(--sans); text-decoration:underline dotted; text-underline-offset:2px}
+
+.composer{border-top:1px solid var(--rule); padding:.9rem 1.5rem 1.1rem; background:var(--paper)}
+.composer form{display:flex; gap:.6rem; align-items:flex-end}
+textarea{flex:1; resize:none; min-height:2.9rem; max-height:11rem; padding:.7rem .85rem; border:1px solid var(--rule); border-radius:8px; background:var(--surface); color:var(--ink); font:1rem/1.45 var(--sans)}
+textarea:focus{border-color:var(--accent); outline:none}
+.primary{background:var(--accent); color:var(--accent-ink); border:0; border-radius:8px; padding:.75rem 1.1rem; font-weight:600}
+.primary[disabled]{opacity:.5; cursor:not-allowed}
+.disclaimer{margin:.55rem 0 0; font-size:.78rem; color:var(--ink-soft)}
+#unavailable{display:none; padding:.75rem 1rem; border:1px solid var(--rule); border-radius:8px; color:var(--ink-soft); font-size:.9rem; margin-bottom:.6rem}
+
+aside{overflow-y:auto; padding:1.25rem 1.25rem 2rem}
+aside h2{font:600 1.1rem/1.2 var(--serif); margin:0 0 .2rem}
+aside .sub{font-size:.82rem; color:var(--ink-soft); margin:0 0 1rem}
+.clock{list-style:none; margin:0; padding:0}
+.clock li{border-top:1px solid var(--rule)}
+.clock button{display:grid; grid-template-columns:4.2rem 1fr; gap:.75rem; width:100%; text-align:left; background:none; border:0; padding:.75rem 0; color:var(--ink)}
+.days{font:600 1.6rem/1 var(--serif); font-variant-numeric:tabular-nums; color:var(--accent)}
+.days small{display:block; font:500 .7rem/1.3 var(--sans); color:var(--ink-soft); margin-top:.2rem}
+.days.urgent{color:var(--alert)} .days.soon{color:var(--soon)}
+.ct{font-size:.88rem; line-height:1.35}
+.ct .meta{display:block; color:var(--ink-soft); font-size:.78rem; margin-top:.2rem}
+.clock button:hover .ct{color:var(--accent)}
+.kbinfo{margin-top:1.5rem; font-size:.82rem; color:var(--ink-soft); border-top:1px solid var(--rule); padding-top:.9rem}
+
+#pop{position:fixed; z-index:20; max-width:min(380px, calc(100vw - 2rem)); background:var(--surface); color:var(--ink); border:1px solid var(--rule); border-radius:10px; padding:.9rem 1rem; box-shadow:0 10px 30px rgba(0,0,0,.18); font:.875rem/1.45 var(--sans)}
+#pop[hidden]{display:none}
+#pop h4{margin:0 0 .35rem; font:600 .95rem/1.3 var(--serif)}
+#pop .pmeta{color:var(--ink-soft); font-size:.78rem; margin-bottom:.4rem}
+#pop a{color:var(--accent)}
+
+@media (max-width: 860px){
+  .app{grid-template-columns:1fr; grid-template-rows:auto auto minmax(0,1fr)}
+  main{border-right:0; grid-row:3}
+  aside{grid-row:2; padding:.6rem 1rem; border-bottom:1px solid var(--rule); overflow:visible}
+  aside h2{font-size:1rem}
+  aside .sub,.kbinfo{display:none}
+  .clock{display:flex; gap:1rem; overflow-x:auto; padding-bottom:.3rem}
+  .clock li{border-top:0; flex:0 0 220px}
+  .clock button{padding:.4rem 0}
+  header{padding:.8rem 1rem .7rem} #log{padding:1rem} .composer{padding:.75rem 1rem .9rem}
+  .stand{display:none}
+}
+@media (prefers-reduced-motion: reduce){ *{scroll-behavior:auto!important} }
+</style>
+<style id="v3-shared-nav-style">.v3nav{position:relative;z-index:9999;display:flex;gap:7px;flex-wrap:wrap;padding:12px 16px;background:#162943;color:#fff;font-family:system-ui,Arial,sans-serif}.v3nav a{color:#fff;text-decoration:none;font-size:12px;border:1px solid #617992;padding:7px 10px;border-radius:8px}.v3nav a:hover{background:#2a4568}.v3note{padding:12px 16px;border-left:4px solid #4d7c8c;background:#eef4f5;color:#203244;font:13px/1.5 system-ui,Arial,sans-serif;margin:14px auto;max-width:1050px}</style></head>
+<body><nav aria-label="HTML-Projektseiten" class="v3nav"><a href="../index.html">Dashboard</a><span class="inactive-original-link"></span><span class="inactive-original-link"></span><span class="inactive-original-link"></span><span class="inactive-original-link"></span><a href="konstantin-ki-kompass.html">KI-Kompass</a><span class="inactive-original-link"></span><span class="inactive-original-link"></span><span class="inactive-original-link"></span></nav><aside class="v3note"><strong>Prototypstatus:</strong> Die möglicherweise enthaltene Claude-Artefakt-Laufzeit ist in einer gewöhnlichen lokalen HTML-Datei nicht verfügbar. Live-Chat und aktuelle Rechtsprüfung sind nicht bestätigt; bitte vor Entscheidungen fachlich prüfen.</aside>
+<div class="app">
+<header>
+<h1 class="brand"><span aria-hidden="true" class="sec">§</span>Rechtsagent KI-Recht</h1>
+<span class="stand" id="stand"></span>
+<div class="hdr-actions"><button class="ghost" id="reset" type="button">Neues Gespräch</button></div>
+</header>
+<main>
+<div aria-live="polite" id="log">
+<div class="empty" id="empty">
+<h2>Was wollt ihr mit KI tun – und was verlangt das Recht dafür?</h2>
+<p>Beschreibt ein KI-System oder stellt eine Frage zu AI Act, KI-MIG, DSGVO, Urheber- oder Markenrecht. Der Agent ordnet ein, nennt Pflichten mit Stichtag und belegt jede Aussage mit Norm und Quelle.</p>
+<ul class="starters" id="starters"></ul>
+</div>
+</div>
+<div class="composer">
+<div id="unavailable">Der KI-Chat ist in dieser Ansicht nicht verfügbar. Öffne die Seite in Claude, um Fragen zu stellen – Fristenuhr und Quellen funktionieren weiterhin.</div>
+<form id="form">
+<label class="sr" for="q" style="position:absolute;left:-9999px">Frage an den Rechtsagenten</label>
+<textarea id="q" placeholder="z. B. „Wir setzen einen Chatbot im Kundenservice ein …“" rows="1"></textarea>
+<button class="primary" id="send" type="submit">Fragen</button>
+</form>
+<p class="disclaimer">Rechtliche Ersteinschätzung auf Basis der Wissensbasis, keine Rechtsberatung.</p>
+</div>
+</main>
+<aside aria-labelledby="clock-h">
+<h2 id="clock-h">Fristenuhr</h2>
+<p class="sub">Nächste Stichtage. Antippen, um den Agenten danach zu fragen.</p>
+<ul class="clock" id="clock"></ul>
+<div class="kbinfo" id="kbinfo"></div>
+</aside>
+</div>
+<div aria-modal="false" hidden="" id="pop" role="dialog"></div>
+<script>
+const KB = {"stand":"2026-10-28","quellen":[{"id":"Q01","t":"KI-Verordnung (EU) 2024/1689 – AI Act","k":"EU-Primärrecht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/reg/2024/1689/oj","info":"In Kraft seit 01.08.2024; konsolidierte Fassung inkl. VO 2026/1744 nutzen."},{"id":"Q02","t":"Digital Omnibus on AI – VO (EU) 2026/1744","k":"EU-Primärrecht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/reg/2026/1744/oj","info":"ABl. 24.07.2026, in Kraft 27.07.2026. Hochrisiko Anhang III → 02.12.2027, Anhang I → 02.08.2028; Art. 4 abgeschwächt; Reallabore → 02.08.2027; neue Verbote ab 02.12.2026; KMU/SMC-Erleichterungen; Begriff Sicherheitsbauteil eingeengt."},{"id":"Q03","t":"EU AI Office","k":"Behörde & Aufsicht","v":"Orientierung","url":"https://digital-strategy.ec.europa.eu/en/policies/ai-office","info":"Aufsicht über GPAI-Modelle; Leitlinien, Templates, Codes of Practice."},{"id":"Q04","t":"AI Act Service Desk & Single Information Platform","k":"Wissensbasis","v":"Orientierung","url":"https://ai-act-service-desk.ec.europa.eu/","info":"Offizielle FAQ, Compliance Checker, Artikel-Explorer."},{"id":"Q05","t":"Kommission: Leitlinien zum AI Act (Definition KI-System, verbotene Praktiken, GPAI, Hochrisiko-Klassifizierung)","k":"Leitlinien & Soft Law","v":"Soft Law","url":"https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai","info":"Nicht bindend, aber Auslegungsmaßstab der Aufsicht."},{"id":"Q06","t":"GPAI Code of Practice","k":"Leitlinien & Soft Law","v":"Soft Law","url":"https://digital-strategy.ec.europa.eu/en/policies/contents-code-gpai","info":"Juli 2025; Kapitel Transparenz, Urheberrecht, Sicherheit; dazu Template Trainingsdaten-Zusammenfassung."},{"id":"Q07","t":"Code of Practice Kennzeichnung KI-generierter Inhalte (Art. 50)","k":"Leitlinien & Soft Law","v":"Soft Law","url":"https://digital-strategy.ec.europa.eu/en/policies/ai-office","info":"Finalstand prüfen."},{"id":"Q08","t":"AI Pact","k":"Leitlinien & Soft Law","v":"Orientierung","url":"https://digital-strategy.ec.europa.eu/en/policies/ai-pact","info":"Freiwillige Selbstverpflichtungen, Praxisbeispiele KI-Kompetenz."},{"id":"Q09","t":"KI-MIG – KI-Marktüberwachungs- und Innovationsförderungsgesetz","k":"Nationales Recht DE","v":"Rechtsverbindlich","url":"https://www.gesetze-im-internet.de/","info":"Ausgefertigt 22.07.2026, in Kraft 29.07.2026. BNetzA zentrale Marktüberwachungs-, Anlauf- und Beschwerdestelle; KI-Marktüberwachungskammer (Anhang III Nr. 6–8); KoKIVO; mind. ein Reallabor; Bußgelder; Länder-/Kommunal-KI ausgenommen; sektorale Zuständigkeiten (z. B. BaFin) bleiben."},{"id":"Q10","t":"Bundesnetzagentur – KI-Aufsicht & KI-Service-Desk","k":"Behörde & Aufsicht","v":"Orientierung","url":"https://www.bundesnetzagentur.de/","info":"Zentrale nationale Aufsicht."},{"id":"Q11","t":"DSGVO – VO (EU) 2016/679","k":"Angrenzendes Recht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/reg/2016/679/oj","info":"Gilt parallel; v. a. Art. 6, 9, 13–15, 22, 35."},{"id":"Q12","t":"EDPB Stellungnahme 28/2024 zu KI-Modellen","k":"Leitlinien & Soft Law","v":"Soft Law","url":"https://www.edpb.europa.eu/","info":"Anonymität von Modellen, berechtigtes Interesse, Folgen unrechtmäßigen Trainings."},{"id":"Q13","t":"DSK Orientierungshilfen KI und Datenschutz","k":"Leitlinien & Soft Law","v":"Soft Law","url":"https://www.datenschutzkonferenz-online.de/","info":"OH KI & Datenschutz (05/2024), OH TOM für KI (2025)."},{"id":"Q14","t":"DSM-Richtlinie (EU) 2019/790 – TDM Art. 3, 4","k":"Angrenzendes Recht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/dir/2019/790/oj","info":"Opt-out nach Art. 4 Abs. 3; Art. 53 AI Act verweist darauf."},{"id":"Q15","t":"UrhG § 44b (Text und Data Mining)","k":"Nationales Recht DE","v":"Rechtsverbindlich","url":"https://www.gesetze-im-internet.de/urhg/__44b.html","info":"Maschinenlesbarer Nutzungsvorbehalt; daneben § 60d (wiss. TDM)."},{"id":"Q16","t":"Produkthaftungsrichtlinie (EU) 2024/2853","k":"Angrenzendes Recht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/dir/2024/2853/oj","info":"Software = Produkt; Umsetzung bis 09.12.2026. KI-Haftungsrichtlinie (AILD) 2025 zurückgezogen."},{"id":"Q17","t":"Cyber Resilience Act – VO (EU) 2024/2847","k":"Angrenzendes Recht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/reg/2024/2847/oj","info":"Meldepflichten ab 11.09.2026, volle Anwendung 11.12.2027."},{"id":"Q18","t":"Digital Services Act – VO (EU) 2022/2065","k":"Angrenzendes Recht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/reg/2022/2065/oj","info":"Gilt seit 17.02.2024; systemische Risiken, Empfehlungssysteme."},{"id":"Q19","t":"Data Act – VO (EU) 2023/2854","k":"Angrenzendes Recht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/reg/2023/2854/oj","info":"Gilt seit 12.09.2025."},{"id":"Q20","t":"Europarat – Rahmenkonvention über KI","k":"Internationale Rahmenwerke","v":"Rechtsverbindlich (Vertragsstaaten)","url":"https://www.coe.int/en/web/artificial-intelligence/the-framework-convention-on-artificial-intelligence","info":"Zur Zeichnung aufgelegt 05.09.2024; Ratifikationsstand prüfen."},{"id":"Q21","t":"OECD.AI – KI-Prinzipien","k":"Internationale Rahmenwerke","v":"Orientierung","url":"https://oecd.ai/","info":"KI-Definition im AI Act aufgegriffen."},{"id":"Q22","t":"NIST AI Risk Management Framework","k":"Standards & Normen","v":"Orientierung","url":"https://www.nist.gov/itl/ai-risk-management-framework","info":"Methodik für Risikomanagement."},{"id":"Q23","t":"CEN-CENELEC JTC 21 – harmonisierte Normen","k":"Standards & Normen","v":"Orientierung","url":"https://www.cencenelec.eu/","info":"Verspätet; nach Listung im ABl. Konformitätsvermutung."},{"id":"Q24","t":"ISO/IEC 42001 – KI-Managementsystem","k":"Standards & Normen","v":"Orientierung","url":"https://www.iso.org/standard/81230.html","info":"Zertifizierbar, keine harmonisierte Norm."},{"id":"Q25","t":"CURIA – EuGH-Rechtsprechung","k":"Rechtsprechung","v":"Rechtsverbindlich","url":"https://curia.europa.eu/","info":"C-634/21 SCHUFA (Art. 22 DSGVO); C-203/22 Dun & Bradstreet (Erklärung automatisierter Entscheidungen); C-250/25 Like Company ./. Google (Gemini; Vervielfältigung/öffentliche Wiedergabe durch LLM-Output, Reichweite TDM-Schranke, Presseverlegerrecht): mündliche Verhandlung Große Kammer 10.03.2026, Schlussanträge Szpunar für 03.09.2026 angekündigt, Veröffentlichung unbestätigt – prüfen; Urteil voraussichtlich 2027."},{"id":"Q26","t":"OLG Hamburg 5 U 104/24 (Kneschke ./. LAION)","k":"Rechtsprechung","v":"Rechtsverbindlich (Einzelfall, nicht rechtskräftig)","url":"https://openjur.de/","info":"Urteil 10.12.2025: Berufung gegen LG Hamburg 310 O 227/23 zurückgewiesen. Erstellung eines Trainingsdatensatzes fällt unter TDM (§ 44b, § 60d UrhG); der Nutzungsvorbehalt in den Website-AGB schloss TDM nicht ausdrücklich aus und war damals nicht wirksam maschinenlesbar. Revision zum BGH zugelassen, anhängig."},{"id":"Q27","t":"EUR-Lex","k":"Wissensbasis","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/","info":"Konsolidierte Fassungen, API, SPARQL."},{"id":"Q28","t":"Legislative Observatory (OEIL)","k":"Wissensbasis","v":"Sekundärquelle","url":"https://oeil.secure.europarl.europa.eu/","info":"Verfahrensstände EP."},{"id":"Q29","t":"Gesetze im Internet / Rechtsprechung im Internet","k":"Wissensbasis","v":"Rechtsverbindlich","url":"https://www.gesetze-im-internet.de/","info":"Amtliche Bundesgesetze, XML-Download."},{"id":"Q30","t":"openJur","k":"Wissensbasis","v":"Sekundärquelle","url":"https://openjur.de/","info":"Freie Rechtsprechungsdatenbank."},{"id":"Q31","t":"artificialintelligenceact.eu – AI Act Explorer","k":"Wissensbasis","v":"Sekundärquelle","url":"https://artificialintelligenceact.eu/","info":"Nicht amtlich."},{"id":"Q32","t":"BSI – KI-Sicherheit","k":"Behörde & Aufsicht","v":"Orientierung","url":"https://www.bsi.bund.de/","info":"AIC4, Publikationen zu generativer KI."},{"id":"Q33","t":"LG München I – GEMA ./. OpenAI (42 O 14139/24) und GEMA ./. Suno (42 O 763/25)","k":"Rechtsprechung","v":"Rechtsverbindlich (Einzelfall, nicht rechtskräftig)","url":"https://www.justiz.bayern.de/gerichte-und-behoerden/landgericht/muenchen-1/presse/2026/16.php","info":"OpenAI (11.11.2025): Memorisierung von Liedtexten im Modell = Vervielfältigung, nicht von TDM gedeckt, kein § 60d; Berufung OLG München 6 U 3662/25 e. Suno (31.07.2026): Kompositionen; Unterlassung für Training (auch in den USA, Fair Use abgelehnt), Speicherung im Modell, Angebot und Output; Anbieter haftet für Outputs, nicht die Nutzer; Berufung OLG München 6 U 2314/26 e."},{"id":"Q34","t":"AG München 142 C 9786/25 – kein Urheberrechtsschutz für KI-Logos","k":"Rechtsprechung","v":"Rechtsverbindlich (Einzelfall)","url":"https://www.gesetze-bayern.de/Content/Document/Y-300-Z-GRURRS-B-2026-N-1513","info":"Urteil 13.02.2026 (GRUR-RR 2026, 143; NJW 2026, 929): Schutz nur bei menschlich-schöpferischem Einfluss auf die konkrete Gestaltung; allgemeine, ergebnisoffene Prompts genügen nicht; Aufwand/Länge des Prompts (hier ca. 1.700 Zeichen) unerheblich."},{"id":"Q35","t":"UrhG § 2 Abs. 2 – persönliche geistige Schöpfung","k":"Nationales Recht DE","v":"Rechtsverbindlich","url":"https://www.gesetze-im-internet.de/urhg/__2.html","info":"Werkschutz setzt menschliche Schöpfung voraus; rein KI-generierte Inhalte regelmäßig ungeschützt. Verletzung: §§ 16, 19a, 23, 97 UrhG."},{"id":"Q36","t":"Markengesetz (MarkenG)","k":"Nationales Recht DE","v":"Rechtsverbindlich","url":"https://www.gesetze-im-internet.de/markeng/","info":"§§ 3, 8 (absolute Schutzhindernisse), 9 (ältere Rechte), 14 (Verletzung), 26 (Benutzungszwang). Herkunft des Zeichens (Mensch oder KI) für Eintragung unerheblich."},{"id":"Q37","t":"Unionsmarkenverordnung (EU) 2017/1001","k":"EU-Primärrecht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/reg/2017/1001/oj","info":"EU-weite Marke beim EUIPO; Art. 7, 8 (Eintragungshindernisse), Art. 9 (Verletzung), Art. 18 (Benutzung)."},{"id":"Q38","t":"Getty Images ./. Stability AI [2025] EWHC 2863 (Ch) – UK","k":"Rechtsprechung","v":"Ausländisches Urteil (nur Überzeugungskraft)","url":"https://www.scl.org/high-court-issues-eagerly-awaited-judgment-in-getty-v-stability-ai-case/","info":"High Court 04.11.2025: Urheberrechtsansprüche abgewiesen (Modellgewichte keine Kopie), begrenzte Markenverletzung durch iStock-/Getty-Wasserzeichen in Outputs älterer Modellversionen; Anbieter verantwortlich. Getty darf zur sekundären Urheberrechtsverletzung in Berufung gehen; Stability keine Berufungszulassung zur Markenverletzung."},{"id":"Q39","t":"BGH X ZB 5/22 (DABUS) – KI ist kein Erfinder","k":"Rechtsprechung","v":"Rechtsverbindlich","url":"https://www.bundesgerichtshof.de/","info":"Beschluss 11.06.2024: Erfinder kann nur eine natürliche Person sein; KI-gestützte Erfindungen bleiben patentierbar, wenn ein Mensch als Erfinder benannt wird."},{"id":"Q40","t":"EU-Designreform – VO (EU) 2024/2822","k":"EU-Primärrecht","v":"Rechtsverbindlich","url":"https://eur-lex.europa.eu/eli/reg/2024/2822/oj","info":"Eingetragenes Design als Alternative für KI-gestützte Gestaltungen; Schutzdauer max. 25 Jahre. Stand der Anwendung prüfen."}],"pflichten":[{"id":"P01","t":"Verbotene KI-Praktiken einstellen","g":"AI Act","norm":"Art. 5 Abs. 1 lit. a–h","a":"Alle Akteure","stufe":"Verboten","ab":"2025-02-02","status":"In Kraft","info":"Manipulation, Ausnutzung von Schwächen, Social Scoring, Predictive Policing allein per Profiling, ungezieltes Gesichtsbild-Scraping, Emotionserkennung am Arbeitsplatz/in Bildung, biometrische Kategorisierung nach sensiblen Merkmalen, biometrische Echtzeit-Fernidentifizierung im öffentlichen Raum (Ausnahmen).","sank":"Bis 35 Mio. € / 7 % (Art. 99 Abs. 3)","q":["Q01","Q05"]},{"id":"P02","t":"Neue Verbote: KI zur Erzeugung nicht-einvernehmlicher intimer Bilder und von Missbrauchsdarstellungen","g":"AI Act","norm":"Art. 5 (neu, VO 2026/1744)","a":"Alle Akteure","stufe":"Verboten","ab":"2026-12-02","status":"Bevorstehend","info":"Durch Omnibus ergänzt.","sank":"Bis 35 Mio. € / 7 %","q":["Q01","Q02"]},{"id":"P03","t":"Maßnahmen zur KI-Kompetenz des Personals","g":"AI Act","norm":"Art. 4 (neu gefasst)","a":"Anbieter, Betreiber","stufe":"Allgemein","ab":"2025-02-02","status":"In Kraft","info":"Seit 27.07.2026: Maßnahmen zur Förderung ergreifen statt ausreichendes Niveau sicherstellen; kein Niveau garantiert. Verbindlich; dokumentieren.","sank":"Nationales Recht (Art. 99 Abs. 1, KI-MIG)","q":["Q01","Q02","Q08"]},{"id":"P04","t":"GPAI-Grundpflichten: Dokumentation, Infos an nachgelagerte Anbieter, Urheberrechtsstrategie, Trainingsdaten-Zusammenfassung","g":"AI Act","norm":"Art. 53, 54","a":"GPAI-Anbieter","stufe":"GPAI","ab":"2025-08-02","status":"In Kraft","info":"Anhang XI/XII; TDM-Opt-out beachten; Bevollmächtigter für Nicht-EU-Anbieter; Code of Practice als Weg.","sank":"Bis 15 Mio. € / 3 % (Art. 101)","q":["Q01","Q06","Q14"]},{"id":"P05","t":"GPAI mit systemischem Risiko: Meldung, Evaluierung, Risikominderung, Vorfälle, Cybersicherheit","g":"AI Act","norm":"Art. 51, 52, 55","a":"GPAI-Anbieter","stufe":"GPAI systemisches Risiko","ab":"2025-08-02","status":"In Kraft","info":"Vermutung ab 10^25 FLOP; Meldung binnen 2 Wochen.","sank":"Bis 15 Mio. € / 3 % (Art. 101)","q":["Q01","Q06"]},{"id":"P06","t":"Bußgeldbefugnis der Kommission gegenüber GPAI-Anbietern","g":"AI Act","norm":"Art. 101","a":"GPAI-Anbieter","stufe":"GPAI","ab":"2026-08-02","status":"In Kraft","info":"Durchsetzung durch AI Office.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q03"]},{"id":"P07","t":"Bestands-GPAI-Modelle (vor 02.08.2025) konform machen","g":"AI Act","norm":"Art. 111 Abs. 3","a":"GPAI-Anbieter","stufe":"GPAI","ab":"2027-08-02","status":"Bevorstehend","info":"Übergangsfrist.","sank":"Bis 15 Mio. € / 3 %","q":["Q01"]},{"id":"P08","t":"Nationale Behörden und Sanktionsregeln","g":"AI Act","norm":"Art. 70, 99","a":"Mitgliedstaaten","stufe":"Allgemein","ab":"2025-08-02","status":"In Kraft","info":"In DE verspätet durch KI-MIG umgesetzt.","sank":"–","q":["Q01","Q09"]},{"id":"P09","t":"Nationale Aufsicht durch BNetzA, Beschwerdestelle, Bußgelder","g":"KI-MIG","norm":"KI-MIG","a":"Alle Akteure","stufe":"Allgemein","ab":"2026-07-29","status":"In Kraft","info":"Zuständige Behörde je System bestimmen (BNetzA oder sektoral).","sank":"Nach Art. 99 AI Act / KI-MIG","q":["Q09","Q10"]},{"id":"P10","t":"Hinweis bei Interaktion mit KI (Chatbots, Voicebots)","g":"AI Act","norm":"Art. 50 Abs. 1","a":"Anbieter","stufe":"Transparenz","ab":"2026-08-02","status":"In Kraft","info":"Sofern nicht offensichtlich.","sank":"Bis 15 Mio. € / 3 % (Art. 99 Abs. 4)","q":["Q01","Q07"]},{"id":"P11","t":"Maschinenlesbare Kennzeichnung synthetischer Inhalte (neue Systeme)","g":"AI Act","norm":"Art. 50 Abs. 2","a":"Anbieter","stufe":"Transparenz","ab":"2026-08-02","status":"In Kraft","info":"Wasserzeichen/Metadaten für Audio, Bild, Video, Text.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q07"]},{"id":"P12","t":"Kennzeichnung synthetischer Inhalte – Ende Schonfrist Bestandssysteme","g":"AI Act","norm":"Art. 50 Abs. 2 i. V. m. VO 2026/1744","a":"Anbieter","stufe":"Transparenz","ab":"2026-12-02","status":"Durch Omnibus verschoben","info":"Systeme, die vor 02.08.2026 im Einsatz waren.","sank":"Bis 15 Mio. € / 3 %","q":["Q02","Q07"]},{"id":"P13","t":"Offenlegung von Deepfakes, KI-Texten zu öffentlichen Themen, Emotionserkennung","g":"AI Act","norm":"Art. 50 Abs. 3, 4","a":"Betreiber","stufe":"Transparenz","ab":"2026-08-02","status":"In Kraft","info":"Erleichterung Kunst/Satire; Ausnahme bei redaktioneller Kontrolle.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q07"]},{"id":"P14","t":"Nationale KI-Reallabore einrichten","g":"AI Act","norm":"Art. 57","a":"Mitgliedstaaten","stufe":"Allgemein","ab":"2027-08-02","status":"Durch Omnibus verschoben","info":"Vorrang KMU/SMC; zusätzlich EU-Reallabor möglich.","sank":"–","q":["Q02","Q09"]},{"id":"P15","t":"Hochrisiko Anhang III: Anbieterpflichten (Risikomanagement, Daten, Doku, Logs, Aufsicht, Robustheit, QMS, Konformität, CE)","g":"AI Act","norm":"Art. 8–17, 43, 47, 48","a":"Anbieter, Einführer, Händler","stufe":"Hochrisiko","ab":"2027-12-02","status":"Durch Omnibus verschoben","info":"Bereiche: Biometrie, kritische Infrastruktur, Bildung, Beschäftigung, wesentliche Dienste/Kredit/Versicherung, Strafverfolgung, Migration, Justiz/Demokratie. KMU/SMC-Erleichterungen.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q02","Q23","Q24"]},{"id":"P16","t":"Hochrisiko Anhang III: Betreiberpflichten","g":"AI Act","norm":"Art. 26","a":"Betreiber","stufe":"Hochrisiko","ab":"2027-12-02","status":"Durch Omnibus verschoben","info":"Nutzung nach Anleitung, menschliche Aufsicht, Eingabedaten, Logs mind. 6 Monate, Info an Beschäftigte und Betroffene.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q02"]},{"id":"P17","t":"Grundrechte-Folgenabschätzung (FRIA)","g":"AI Act","norm":"Art. 27","a":"Betreiber (öffentlich, öffentliche Dienste, Kredit/Versicherung)","stufe":"Hochrisiko","ab":"2027-12-02","status":"Durch Omnibus verschoben","info":"Vor Erstnutzung; mit DSFA kombinierbar.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q11"]},{"id":"P18","t":"Registrierung in der EU-Datenbank (inkl. Art. 6 Abs. 3-Ausnahme)","g":"AI Act","norm":"Art. 49, 71","a":"Anbieter, öffentliche Betreiber","stufe":"Hochrisiko","ab":"2027-12-02","status":"Durch Omnibus verschoben","info":"Registrierung bleibt auch bei Ausnahme nach Art. 6 Abs. 3.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q02"]},{"id":"P19","t":"Beobachtung nach Inverkehrbringen, Meldung schwerwiegender Vorfälle","g":"AI Act","norm":"Art. 72, 73","a":"Anbieter","stufe":"Hochrisiko","ab":"2027-12-02","status":"Durch Omnibus verschoben","info":"Meldung max. 15 Tage, kürzer bei Todesfall/kritischer Infrastruktur.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q10"]},{"id":"P20","t":"Hochrisiko Anhang I: KI als Sicherheitsbauteil regulierter Produkte","g":"AI Act","norm":"Art. 6 Abs. 1, Anhang I","a":"Anbieter, Hersteller","stufe":"Hochrisiko","ab":"2028-08-02","status":"Durch Omnibus verschoben","info":"Medizinprodukte, Maschinen, Spielzeug u. a.; Sicherheitsbauteil eingeengt.","sank":"Bis 15 Mio. € / 3 %","q":["Q01","Q02","Q23"]},{"id":"P21","t":"Bestands-Hochrisiko-Systeme öffentlicher Stellen anpassen","g":"AI Act","norm":"Art. 111 Abs. 2","a":"Anbieter, Betreiber","stufe":"Hochrisiko","ab":"2030-08-02","status":"Bevorstehend","info":"Stand nach Omnibus prüfen.","sank":"–","q":["Q01"]},{"id":"P22","t":"Datenschutz-Folgenabschätzung für KI-Verarbeitungen","g":"DSGVO","norm":"Art. 35","a":"Verantwortliche","stufe":"Allgemein","ab":"2018-05-25","status":"In Kraft","info":"Rechtsgrundlage für Training/Betrieb klären (EDPB 28/2024).","sank":"Bis 20 Mio. € / 4 % (Art. 83)","q":["Q11","Q12","Q13"]},{"id":"P23","t":"Automatisierte Einzelentscheidungen, Auskunft über Logik","g":"DSGVO","norm":"Art. 13–15, 22","a":"Verantwortliche","stufe":"Allgemein","ab":"2018-05-25","status":"In Kraft","info":"EuGH SCHUFA weit; Dun & Bradstreet: verständliche Erklärung.","sank":"Bis 20 Mio. € / 4 %","q":["Q11","Q25"]},{"id":"P24","t":"Neue Produkthaftung für Software und KI","g":"Produkthaftungs-RL","norm":"RL 2024/2853","a":"Hersteller, Einführer, Händler","stufe":"Allgemein","ab":"2026-12-09","status":"Bevorstehend","info":"Für Produkte ab 09.12.2026; Beweiserleichterungen; Updates.","sank":"Verschuldensunabhängige Haftung","q":["Q16"]},{"id":"P25","t":"CRA: Meldung aktiv ausgenutzter Schwachstellen","g":"Cyber Resilience Act","norm":"Art. 14","a":"Hersteller","stufe":"Allgemein","ab":"2026-09-11","status":"In Kraft","info":"24 h Frühwarnung, 72 h Meldung.","sank":"Bis 15 Mio. € / 2,5 %","q":["Q17"]},{"id":"P26","t":"CRA: volle Anwendung","g":"Cyber Resilience Act","norm":"VO 2024/2847","a":"Hersteller, Einführer, Händler","stufe":"Allgemein","ab":"2027-12-11","status":"Bevorstehend","info":"Security by Design, CE; Schnittstelle Art. 15 AI Act.","sank":"Bis 15 Mio. € / 2,5 %","q":["Q17","Q01"]},{"id":"P27","t":"Data Act: Datenzugang by Design","g":"Data Act","norm":"Art. 3 Abs. 1","a":"Hersteller","stufe":"Allgemein","ab":"2026-09-12","status":"In Kraft","info":"Für vernetzte Produkte ab 12.09.2026.","sank":"Nationales Recht","q":["Q19"]},{"id":"P28","t":"TDM-Nutzungsvorbehalte beachten (Training) bzw. eigene Werke maschinenlesbar schützen","g":"Urheberrecht","norm":"§ 44b Abs. 3 UrhG, Art. 4 Abs. 3 DSM-RL, Art. 53 Abs. 1 lit. c AI Act","a":"Anbieter, GPAI-Anbieter, Rechteinhaber","stufe":"Allgemein","ab":"2021-06-07","status":"In Kraft","info":"Wer trainiert: Vorbehalte (robots.txt, TDM-Rep, Metadaten, AGB) erfassen und dokumentieren. Wer schützen will: TDM ausdrücklich und maschinenlesbar ausschließen – das OLG Hamburg ließ einen allgemeinen Scraping-Ausschluss in AGB nicht genügen. TDM deckt keine Memorisierung (LG München I).","sank":"Unterlassung, Auskunft, Schadensersatz (§ 97 UrhG)","q":["Q15","Q14","Q26","Q33","Q06"]},{"id":"P29","t":"Memorisierung vermeiden und KI-Outputs vor Veröffentlichung prüfen","g":"Urheberrecht","norm":"§§ 16, 19a, 23, 97 UrhG","a":"Anbieter, Betreiber","stufe":"Allgemein","ab":"","status":"In Kraft","info":"Anbieter: Memorisierung geschützter Werke im Modell ist Vervielfältigung; Anbieter haftet für Outputs (LG München I, nicht rechtskräftig). Betreiber/Nutzer: Outputs vor Veröffentlichung auf Übereinstimmung mit bekannten Werken, Figuren, Texten prüfen; keine Prompts auf Nachahmung konkreter Werke.","sank":"Unterlassung, Auskunft, Schadensersatz (§ 97 UrhG)","q":["Q33","Q35","Q25"]},{"id":"P30","t":"Keine Schutzrechte an rein KI-generierten Inhalten einplanen","g":"Urheberrecht","norm":"§ 2 Abs. 2 UrhG","a":"Betreiber, Unternehmen","stufe":"Allgemein","ab":"","status":"In Kraft","info":"Rein per Prompt erzeugte Inhalte sind regelmäßig gemeinfrei (AG München). Menschliche Gestaltungsentscheidungen dokumentieren; für Logos Marke oder Design anmelden; Output-Klauseln in den Anbieter-AGB prüfen; KI ist auch kein Erfinder (BGH DABUS).","sank":"Schutzlücke: Dritte dürfen nachahmen","q":["Q34","Q35","Q39","Q40"]},{"id":"P31","t":"Markenrecherche und -anmeldung bei KI-generierten Logos und Namen","g":"Markenrecht","norm":"§§ 9, 14, 26 MarkenG; Art. 8, 9, 18 UMV","a":"Unternehmen","stufe":"Allgemein","ab":"","status":"In Kraft","info":"KI kann Zeichen erzeugen, die älteren Marken ähneln – vor Nutzung Identitäts- und Ähnlichkeitsrecherche (DPMA, EUIPO). Anmeldung ist unabhängig von der KI-Herkunft möglich; Schutz nur für eingetragene Waren/Dienstleistungen, territorial, Benutzungszwang nach 5 Jahren.","sank":"Unterlassung, Schadensersatz, Vernichtung (§§ 14, 18 MarkenG)","q":["Q36","Q37"]},{"id":"P32","t":"Fremde Marken in KI-Outputs vermeiden (Logos, Wasserzeichen, Produktnamen)","g":"Markenrecht","norm":"§ 14 MarkenG, Art. 9 UMV","a":"Anbieter, Betreiber","stufe":"Allgemein","ab":"","status":"In Kraft","info":"Outputs mit fremden Logos oder Wasserzeichen können Markenverletzung sein, wenn sie im geschäftlichen Verkehr herkunftshinweisend wirken (UK: Getty ./. Stability, Haftung des Anbieters). Anbieter: Filter; Betreiber: Werbe- und Produktmaterial vor Nutzung prüfen; Vergleichs- und Anlehnungswerbung zusätzlich nach UWG.","sank":"Unterlassung, Schadensersatz","q":["Q36","Q37","Q38"]}]};
+const $ = s => document.querySelector(s);
+const byId = Object.fromEntries([...KB.quellen, ...KB.pflichten].map(x => [x.id, x]));
+const fmt = iso => { if (!iso) return "laufend"; const [y,m,d] = iso.split("-"); return `${d}.${m}.${y}`; };
+const today = new Date(); today.setHours(0,0,0,0);
+const daysTo = iso => Math.round((new Date(iso + "T00:00:00") - today) / 86400000);
+const todayIso = today.toISOString().slice(0,10);
+
+$("#stand").textContent = `Wissensstand ${fmt(KB.stand)}`;
+$("#kbinfo").textContent = `Wissensbasis: ${KB.quellen.length} Quellen, ${KB.pflichten.length} Pflichten. Stand ${fmt(KB.stand)}. Spätere Entwicklungen sind nicht enthalten.`;
+
+/* Fristenuhr */
+const upcoming = KB.pflichten.filter(p => p.ab && daysTo(p.ab) >= 0).sort((a,b) => a.ab.localeCompare(b.ab)).slice(0, 7);
+for (const p of upcoming) {
+  const d = daysTo(p.ab);
+  const li = document.createElement("li");
+  const b = document.createElement("button"); b.type = "button";
+  const cls = d <= 45 ? "urgent" : d <= 120 ? "soon" : "";
+  b.innerHTML = `<span class="days ${cls}"></span><span class="ct"></span>`;
+  b.querySelector(".days").append(String(d)); 
+  const sm = document.createElement("small"); sm.textContent = d === 1 ? "Tag" : "Tage"; b.querySelector(".days").append(sm);
+  b.querySelector(".ct").textContent = p.t;
+  const meta = document.createElement("span"); meta.className = "meta"; meta.textContent = `${p.norm}, ab ${fmt(p.ab)}`;
+  b.querySelector(".ct").append(meta);
+  b.addEventListener("click", () => ask(`Was bedeutet die Frist „${p.t}“ (${p.norm}, ab ${fmt(p.ab)}) konkret für uns, und was sollten wir bis dahin tun?`));
+  li.append(b); $("#clock").append(li);
+}
+
+/* Starter */
+const STARTERS = [
+  "Wir wollen ein KI-Tool kaufen, das Bewerbungen vorsortiert. Was müssen wir tun?",
+  "Unser Kundenservice nutzt einen Chatbot auf Basis eines großen Sprachmodells. Welche Pflichten gelten schon heute?",
+  "Was hat der Digital Omnibus am AI Act geändert – und was nicht?",
+  "Dürfen wir urheberrechtlich geschützte Texte zum Training eines eigenen Modells nutzen?",
+  "Wir haben unser Logo mit KI erstellt. Ist es geschützt, und können wir es als Marke anmelden?"
+];
+for (const s of STARTERS) {
+  const li = document.createElement("li"); const b = document.createElement("button");
+  b.type = "button"; b.textContent = s; b.addEventListener("click", () => ask(s)); li.append(b); $("#starters").append(li);
+}
+
+/* Anweisungen für Claude */
+const RULES = `Du bist der „Rechtsagent KI-Recht“: ein juristisch präziser Assistent für KI-Recht in der EU mit Fokus Deutschland. Heute ist der ${fmt(todayIso)}. Du gibst rechtliche Ersteinschätzungen, keine Rechtsberatung.
+
+WISSENSBASIS (Stand ${fmt(KB.stand)}; Quellen-IDs Q.., Pflichten-IDs P..):
+${JSON.stringify(KB)}
+
+VORGEHEN
+1. Frageart bestimmen: allgemeine Rechtsfrage, Einordnung eines konkreten Systems oder Pflichten-/Fristenübersicht.
+2. Fehlen Fakten, die das Ergebnis ändern, frage nach den 2–3 wichtigsten (Zweck/Einsatzbereich, eigene Rolle Anbieter oder Betreiber, Zielgruppe, personenbezogene Daten, Unternehmensgröße). Reicht eine Annahme, triff sie ausdrücklich und antworte.
+3. Prüfreihenfolge: KI-System (Art. 3 Nr. 1) → verboten (Art. 5; neue Verbote ab 02.12.2026) → Hochrisiko (Anhang I ab 02.08.2028; Anhang III ab 02.12.2027: Biometrie, kritische Infrastruktur, Bildung, Beschäftigung, wesentliche Dienste/Kredit/Versicherung, Strafverfolgung, Migration, Justiz/Demokratie; Ausnahme Art. 6 Abs. 3 nie bei Profiling, Registrierung bleibt) → Transparenz Art. 50 (seit 02.08.2026) → GPAI Art. 51–56 → Rolle und Rollenwechsel Art. 25 → angrenzendes Recht (DSGVO, Urheber- und Markenrecht, Produkthaftung, CRA, Mitbestimmung § 87 Abs. 1 Nr. 6 BetrVG).
+4. Pflichten aus der Wissensbasis zuordnen und angeben, ob sie heute gelten, bevorstehen oder durch den Omnibus verschoben wurden.
+
+URHEBER- UND MARKENRECHT
+- Urheberrecht nach Phasen trennen: Training (TDM § 44b UrhG mit maschinenlesbarem Opt-out, § 60d; Art. 53 Abs. 1 lit. c, d AI Act), Modell (Memorisierung = Vervielfältigung laut LG München I [Q33]), Output (§§ 16, 19a, 23, 97 UrhG; Anbieter haftet für Outputs laut LG München I, wer veröffentlicht, haftet für die eigene Nutzung), Schutz des Ergebnisses (§ 2 Abs. 2 UrhG; rein per Prompt erzeugte Inhalte regelmäßig ungeschützt [Q34]; KI ist kein Erfinder [Q39]).
+- OLG Hamburg [Q26] und LG München I [Q33] sind nicht rechtskräftig; EuGH C-250/25 [Q25] ist anhängig und kann die deutsche Linie überlagern. Sage das bei jeder darauf gestützten Aussage.
+- Markenrecht: KI-Herkunft eines Logos oder Namens ist für die Eintragung unerheblich [Q36, Q37]; Unterscheidungskraft und ältere Rechte prüfen (Recherche DPMA/EUIPO); Schutz nur für eingetragene Waren/Dienstleistungen, territorial, Benutzungszwang. Fremde Logos oder Wasserzeichen im Output können Markenverletzung sein (UK Getty ./. Stability [Q38], nur Überzeugungskraft). Beschreibende Nennung fremder Marken: § 23 MarkenG. Ob KI-Empfehlungen Marken „benutzen“, ist ungeklärt.
+
+REGELN
+- Der Digital Omnibus (VO 2026/1744, in Kraft 27.07.2026) hat Hochrisiko-Pflichten verschoben, NICHT Verbote, Art. 50 oder GPAI-Pflichten.
+- Art. 4 bleibt verbindlich, verlangt aber nur Maßnahmen zur Förderung der KI-Kompetenz.
+- Aufsicht DE: Bundesnetzagentur nach KI-MIG; sektorale Behörden gehen vor; KI öffentlicher Stellen von Ländern/Kommunen ausgenommen.
+- Belege jede Kernaussage mit Norm (z. B. „Art. 26 Abs. 6 AI Act“) und ID in eckigen Klammern, z. B. [Q01] oder [P16]. Nenne die Verbindlichkeit (Gesetz/Urteil vs. Soft Law).
+- Erfinde keine Aktenzeichen, Fundstellen oder Fristen. Was nicht in der Wissensbasis steht, kennzeichne als „nicht in der Wissensbasis – bitte prüfen“. Entwicklungen nach dem Wissensstand kennst du nicht; sage das, wenn es relevant ist.
+
+FORMAT (Markdown, Deutsch bzw. Sprache der Frage, knapp):
+### Kurzantwort
+2–4 Sätze.
+### Einordnung
+Prüfung mit Normen.
+### Pflichten & Fristen
+Tabelle: | Pflicht | Norm | gilt ab | Status |
+### Quellen
+IDs mit Titel und Verbindlichkeit.
+### Offene Punkte
+Fehlende Fakten, Annahmen, Empfehlungen.
+Letzter Satz: Hinweis, dass dies eine Ersteinschätzung und keine Rechtsberatung ist; bei möglichem Verbot oder hohen Bußgeldrisiken anwaltliche Prüfung empfehlen.
+Bei reinen Rückfragen an den Nutzer genügt die Rückfrage ohne dieses Format.`;
+
+/* Markdown → sicheres HTML */
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+function inline(s) {
+  s = esc(s);
+  s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(?<![\w*])\*(?!\s)(.+?)\*(?!\w)/g, "<em>$1</em>");
+  s = s.replace(/\[((?:[QP]\d{2})(?:\s*,\s*[QP]\d{2})*)\]/g, (m, ids) =>
+    ids.split(/\s*,\s*/).map(id => byId[id] ? `<button type="button" class="ref" data-id="${id}">${id}</button>` : id).join(" "));
+  s = s.replace(/(?<![\w])((?:Art\.|§§?)\s?\d+[a-z]?(?:\s(?:Abs\.|lit\.|Nr\.|UAbs\.)\s?[\w–-]+)*(?:\s(?:AI Act|DSGVO|UrhG|BetrVG|KI-MIG|CRA|MarkenG|UMV))?|Anhang\s(?:I{1,3}|IV|VIII|XI|XII)(?:\sNr\.\s?\d+)?)/g, '<mark class="cite">$1</mark>');
+  return s;
+}
+function md(src) {
+  const lines = src.replace(/\r/g, "").split("\n"); let out = "", i = 0;
+  while (i < lines.length) {
+    const l = lines[i];
+    if (/^\s*\|.*\|\s*$/.test(l)) {
+      const rows = []; while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) rows.push(lines[i++]);
+      const cells = r => r.trim().replace(/^\||\|$/g, "").split("|").map(c => c.trim());
+      const body = rows.filter(r => !/^\s*\|[\s:|-]+\|\s*$/.test(r));
+      if (!body.length) continue;
+      out += '<div class="tbl"><table><thead><tr>' + cells(body[0]).map(c => `<th>${inline(c)}</th>`).join("") + "</tr></thead><tbody>" +
+        body.slice(1).map(r => "<tr>" + cells(r).map(c => `<td>${inline(c)}</td>`).join("") + "</tr>").join("") + "</tbody></table></div>";
+      continue;
+    }
+    let m;
+    if ((m = l.match(/^#{1,4}\s+(.*)/))) { out += `<h3>${inline(m[1])}</h3>`; i++; continue; }
+    if (/^\s*[-*]\s+/.test(l)) { out += "<ul>"; while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) out += `<li>${inline(lines[i++].replace(/^\s*[-*]\s+/, ""))}</li>`; out += "</ul>"; continue; }
+    if (/^\s*\d+[.)]\s+/.test(l)) { out += "<ol>"; while (i < lines.length && /^\s*\d+[.)]\s+/.test(lines[i])) out += `<li>${inline(lines[i++].replace(/^\s*\d+[.)]\s+/, ""))}</li>`; out += "</ol>"; continue; }
+    if (!l.trim()) { i++; continue; }
+    const para = []; while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|\s*[-*]\s|\s*\d+[.)]\s|\s*\|)/.test(lines[i])) para.push(lines[i++]);
+    out += `<p>${inline(para.join(" "))}</p>`;
+  }
+  return out;
+}
+
+/* Quellen-Popover */
+const pop = $("#pop");
+document.addEventListener("click", e => {
+  const b = e.target.closest("button.ref");
+  if (!b) { if (!e.target.closest("#pop")) pop.hidden = true; return; }
+  const x = byId[b.dataset.id]; if (!x) return;
+  pop.innerHTML = "";
+  const h = document.createElement("h4"); h.textContent = `${x.id}: ${x.t}`; pop.append(h);
+  const meta = document.createElement("div"); meta.className = "pmeta";
+  meta.textContent = x.url ? `${x.k}, ${x.v}` : `${x.g}, ${x.norm}, ${x.ab ? "ab " + fmt(x.ab) : "gilt laufend"}, ${x.status}`; pop.append(meta);
+  const p = document.createElement("div"); p.textContent = x.info + (x.sank ? ` Sanktion: ${x.sank}.` : ""); pop.append(p);
+  if (x.url) { const a = document.createElement("a"); a.href = x.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Quelle öffnen"; const d = document.createElement("div"); d.style.marginTop = ".4rem"; d.append(a); pop.append(d); }
+  pop.hidden = false;
+  const r = b.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight;
+  pop.style.left = Math.max(12, Math.min(r.left, innerWidth - pw - 12)) + "px";
+  pop.style.top = (r.bottom + ph + 12 < innerHeight ? r.bottom + 6 : Math.max(12, r.top - ph - 6)) + "px";
+});
+addEventListener("keydown", e => { if (e.key === "Escape") pop.hidden = true; });
+
+/* Chat */
+let sample = null, turns = [], ctl = null, busy = false;
+const log = $("#log"), q = $("#q"), send = $("#send");
+const EMPTY_HTML = log.innerHTML;
+const ERR = {
+  not_granted: "Der Zugriff auf Claude wurde nicht erlaubt. Lade die Seite neu, um erneut gefragt zu werden.",
+  sampling_disabled: "Claude ist für dieses Konto nicht verfügbar.",
+  rate_limited: "Gerade zu viele Anfragen. Versuche es in ein paar Minuten erneut.",
+  session_expired: "Die Sitzung ist abgelaufen. Melde dich erneut an.",
+  refused: "Diese Anfrage wurde abgelehnt. Formuliere sie bitte anders.",
+  prompt_too_large: "Das Gespräch ist zu lang geworden. Starte ein neues Gespräch.",
+  empty_completion: "Es kam keine Antwort zurück. Formuliere die Frage etwas kürzer.",
+  upstream_error: "Verbindung unterbrochen. Sende die Frage erneut."
+};
+const HIDE = new Set(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"]);
+
+function setBusy(v) { busy = v; send.textContent = v ? "Stopp" : "Fragen"; send.disabled = false; }
+function addMsg(role, text) {
+  $("#empty")?.remove();
+  const el = document.createElement("div"); el.className = "msg " + role;
+  if (role === "user") el.textContent = text; else el.innerHTML = text;
+  log.append(el); log.scrollTop = log.scrollHeight; return el;
+}
+function ask(text) {
+  if (busy || !text.trim()) return;
+  if (!sample) { $("#unavailable").style.display = "block"; return; }
+  q.value = text; $("#form").requestSubmit();
+}
+async function run(text) {
+  addMsg("user", text);
+  turns.push({ role: "user", content: text });
+  const recent = turns.slice(-12); while (recent.length && recent[0].role !== "user") recent.shift();
+  const bot = addMsg("bot", '<span class="thinking">Prüft Normen und Fristen …</span>');
+  ctl = new AbortController(); setBusy(true);
+  try {
+    const { text: answer, truncated } = await sample([{ role: "user", content: RULES }, ...recent], {
+      cache: false, signal: ctl.signal,
+      onText: ({ text }) => { bot.innerHTML = md(text); log.scrollTop = log.scrollHeight; }
+    });
+    bot.innerHTML = md(answer);
+    turns.push({ role: "assistant", content: answer });
+    if (truncated) bot.insertAdjacentHTML("beforeend", '<p class="note">Antwort wurde gekürzt. Frage gezielter nach einzelnen Punkten.</p>');
+  } catch (e) {
+    if (e.text) { bot.innerHTML = md(e.text); turns.push({ role: "assistant", content: e.text }); }
+    else bot.innerHTML = "";
+    if (e.code !== "cancelled") {
+      const n = document.createElement("p"); n.className = "note err"; n.textContent = ERR[e.code] || ERR.upstream_error; bot.append(n);
+      if (HIDE.has(e.code)) { sample = null; $("#unavailable").style.display = "block"; send.disabled = true; }
+    } else if (!e.text) bot.remove();
+  } finally { setBusy(false); ctl = null; q.focus(); }
+}
+$("#form").addEventListener("submit", e => {
+  e.preventDefault();
+  if (busy) { ctl?.abort(); return; }
+  const t = q.value.trim(); if (!t) return;
+  if (!sample) { $("#unavailable").style.display = "block"; return; }
+  q.value = ""; q.style.height = ""; run(t);
+});
+q.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#form").requestSubmit(); } });
+q.addEventListener("input", () => { q.style.height = "auto"; q.style.height = Math.min(q.scrollHeight, 176) + "px"; });
+$("#reset").addEventListener("click", () => {
+  ctl?.abort(); turns = []; log.innerHTML = EMPTY_HTML;
+  $("#starters").querySelectorAll("button").forEach(b => b.addEventListener("click", () => ask(b.textContent)));
+});
+
+(async () => {
+  try { sample = window.claude ? await window.claude.use("sample") : null; } catch { sample = null; }
+  if (!sample) { $("#unavailable").style.display = "block"; send.disabled = true; }
+})();
+</script>
+</body>
+</html>

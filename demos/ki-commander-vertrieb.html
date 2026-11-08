@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KI Commander – Vertrieb</title>
+  <meta name="description" content="Tagessteuerung für Vertriebsmitarbeiter: Prioritäten, Chancen und nächste Aktionen auf einen Blick.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230b1426'/%3E%3Cpath d='M18 18h12v7H25v14h5v7H18V18Zm17 0h11v7h-4v14h4v7H35V18Z' fill='%235ee1b2'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07101e;
+      --panel: #0e1a2d;
+      --panel-2: #111f35;
+      --line: #223451;
+      --text: #f5f8ff;
+      --muted: #95a7c3;
+      --green: #5ee1b2;
+      --blue: #6aa8ff;
+      --amber: #ffc96b;
+      --red: #ff7a8a;
+      --shadow: 0 18px 50px rgba(0,0,0,.26);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: radial-gradient(circle at 85% -10%, #17345f 0, transparent 35%), var(--bg); color: var(--text); }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .shell { min-height: 100vh; }
+    .topbar {
+      height: 72px; border-bottom: 1px solid var(--line); background: rgba(7,16,30,.86);
+      backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(18px, 3vw, 44px); position: sticky; top: 0; z-index: 10;
+    }
+    .brand { display: flex; gap: 12px; align-items: center; font-weight: 800; letter-spacing: -.02em; }
+    .mark { width: 38px; height: 38px; border: 1px solid #3d587b; border-radius: 11px; display: grid; place-items: center; color: var(--green); background: #0a1628; }
+    .mark svg { width: 22px; }
+    .demo { color: var(--muted); font-size: .78rem; font-weight: 600; border: 1px solid var(--line); border-radius: 999px; padding: 4px 8px; }
+    .fresh { color: var(--muted); font-size: .86rem; display: flex; align-items: center; gap: 8px; }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 5px rgba(94,225,178,.09); }
+    main { width: min(1440px, 100%); margin: 0 auto; padding: 34px clamp(18px, 3vw, 44px) 48px; }
+    .intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 26px; }
+    .eyebrow { color: var(--green); text-transform: uppercase; font-size: .76rem; font-weight: 800; letter-spacing: .13em; margin: 0 0 8px; }
+    h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1; letter-spacing: -.055em; }
+    .intro p { margin: 12px 0 0; color: var(--muted); font-size: 1.02rem; }
+    .datebox { text-align: right; min-width: 180px; }
+    .datebox strong { display: block; font-size: 1.02rem; }
+    .datebox span { color: var(--muted); font-size: .88rem; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(320px, .8fr); gap: 20px; align-items: start; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+    .stat, .panel { background: linear-gradient(145deg, rgba(17,31,53,.96), rgba(11,23,41,.96)); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+    .stat { padding: 18px; position: relative; overflow: hidden; }
+    .stat:after { content: ""; position: absolute; inset: auto -20px -36px auto; width: 88px; height: 88px; border: 16px solid rgba(106,168,255,.05); border-radius: 50%; }
+    .stat span { color: var(--muted); font-size: .82rem; display: block; }
+    .stat strong { display: block; font-size: clamp(1.35rem, 2.4vw, 2rem); margin: 7px 0 3px; letter-spacing: -.035em; }
+    .trend { font-size: .8rem; font-weight: 700; color: var(--green); }
+    .trend.warn { color: var(--amber); }
+    .panel { padding: 22px; }
+    .panel + .panel { margin-top: 20px; }
+    .panel-head { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 18px; }
+    h2 { margin: 0; font-size: 1.05rem; letter-spacing: -.015em; }
+    .subtle { color: var(--muted); font-size: .82rem; }
+    .priorities { display: grid; gap: 11px; }
+    .priority {
+      display: grid; grid-template-columns: 42px minmax(0,1fr) auto; gap: 14px; align-items: center;
+      padding: 15px; border-radius: 14px; background: #0b1729; border: 1px solid #1d3150;
+      transition: opacity .2s, transform .2s, border-color .2s;
+    }
+    .priority:hover { transform: translateY(-1px); border-color: #355681; }
+    .priority.done { opacity: .45; }
+    .priority.done .p-title { text-decoration: line-through; }
+    .rank { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; font-weight: 900; background: rgba(106,168,255,.12); color: var(--blue); }
+    .rank.hot { color: var(--red); background: rgba(255,122,138,.1); }
+    .p-title { font-weight: 750; margin-bottom: 5px; }
+    .p-reason { color: var(--muted); font-size: .84rem; line-height: 1.4; }
+    .p-reason b { color: var(--amber); }
+    .actions { display: flex; gap: 7px; }
+    .icon-btn { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line); color: var(--text); background: #101f35; display: grid; place-items: center; }
+    .icon-btn:hover, .icon-btn:focus-visible { border-color: var(--green); outline: none; }
+    .icon-btn svg { width: 17px; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; min-width: 650px; }
+    th { text-align: left; color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; padding: 0 12px 11px; }
+    td { border-top: 1px solid var(--line); padding: 14px 12px; font-size: .9rem; }
+    td strong { display: block; }
+    td small { color: var(--muted); }
+    .badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 5px 9px; font-size: .76rem; font-weight: 800; background: rgba(94,225,178,.1); color: var(--green); }
+    .badge.warn { background: rgba(255,201,107,.1); color: var(--amber); }
+    .badge.risk { background: rgba(255,122,138,.1); color: var(--red); }
+    .commander { position: sticky; top: 92px; }
+    .ai-head { display: flex; gap: 12px; align-items: center; margin-bottom: 18px; }
+    .ai-orb { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #07101e; background: linear-gradient(135deg, var(--green), var(--blue)); box-shadow: 0 0 28px rgba(94,225,178,.18); }
+    .ai-head strong { display: block; }
+    .ai-head span { color: var(--muted); font-size: .8rem; }
+    .briefing { background: #0a1627; border: 1px solid #203655; border-radius: 15px; padding: 16px; color: #dfe9f8; line-height: 1.55; font-size: .91rem; min-height: 126px; }
+    .briefing strong { color: var(--green); }
+    .quick { display: flex; flex-wrap: wrap; gap: 8px; margin: 13px 0; }
+    .chip { border: 1px solid #29415f; background: #102039; color: #cfe0f7; border-radius: 999px; padding: 8px 11px; font-size: .78rem; }
+    .chip:hover, .chip:focus-visible { border-color: var(--blue); outline: none; }
+    .ask { display: flex; gap: 8px; }
+    .ask input { min-width: 0; flex: 1; background: #081321; color: var(--text); border: 1px solid #2a4261; border-radius: 12px; padding: 12px; font-size: .9rem; }
+    .ask input:focus { border-color: var(--green); outline: 3px solid rgba(94,225,178,.09); }
+    .send { border: 0; border-radius: 12px; background: var(--green); color: #061017; font-weight: 900; padding: 0 15px; }
+    .signal-list { display: grid; gap: 12px; }
+    .signal { display: grid; grid-template-columns: 10px 1fr; gap: 11px; align-items: start; }
+    .signal i { width: 9px; height: 9px; border-radius: 50%; background: var(--blue); margin-top: 6px; }
+    .signal:nth-child(2) i { background: var(--amber); }
+    .signal:nth-child(3) i { background: var(--red); }
+    .signal strong { font-size: .88rem; }
+    .signal p { margin: 3px 0 0; color: var(--muted); font-size: .8rem; line-height: 1.4; }
+    .refresh-btn { border: 1px solid #315074; background: #102039; color: #dce9fb; border-radius: 10px; padding: 9px 12px; font-weight: 750; font-size: .78rem; }
+    .refresh-btn:hover, .refresh-btn:focus-visible { border-color: var(--green); outline: none; }
+    .refresh-btn:disabled { opacity: .55; cursor: wait; }
+    .news-list { display: grid; gap: 13px; }
+    .news-card { background: #0b1729; border: 1px solid #1d3150; border-radius: 15px; padding: 17px; }
+    .news-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-size: .76rem; }
+    .news-card h3 { margin: 10px 0 12px; font-size: 1rem; line-height: 1.35; }
+    .news-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 9px; }
+    .news-note { background: #081421; border-radius: 10px; padding: 10px; color: var(--muted); font-size: .78rem; line-height: 1.45; }
+    .news-note b { color: var(--text); display: block; margin-bottom: 3px; }
+    .source-link { display: inline-flex; margin-top: 12px; color: var(--blue); font-size: .78rem; font-weight: 800; text-decoration: none; }
+    .source-link:hover { text-decoration: underline; }
+    .source-state { margin-top: 14px; color: var(--muted); font-size: .78rem; }
+    .order-summary { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 18px; }
+    .order-kpi { background: #0b1729; border: 1px solid #1d3150; border-radius: 13px; padding: 14px; }
+    .order-kpi span { color: var(--muted); font-size: .76rem; display: block; }
+    .order-kpi strong { display: block; margin-top: 6px; font-size: 1.18rem; }
+    .calendar-wrap { overflow-x: auto; padding-bottom: 4px; }
+    .calendar-week { display: grid; grid-template-columns: repeat(7, minmax(118px, 1fr)); gap: 9px; min-width: 870px; }
+    .calendar-day { min-height: 150px; border: 1px solid #1d3150; border-radius: 14px; background: #0b1729; padding: 12px; }
+    .calendar-day.today { border-color: var(--green); box-shadow: inset 0 0 0 1px rgba(94,225,178,.2); }
+    .calendar-day-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; margin-bottom: 10px; }
+    .calendar-day-head strong { font-size: .82rem; }
+    .calendar-day-head span { color: var(--muted); font-size: .75rem; }
+    .calendar-events { display: grid; gap: 8px; }
+    .calendar-event { width: 100%; text-align: left; color: var(--text); background: #10213a; border: 1px solid #294462; border-radius: 10px; padding: 9px; }
+    .calendar-event:hover, .calendar-event:focus-visible { border-color: var(--blue); outline: none; }
+    .calendar-event time { display: block; color: var(--green); font-size: .74rem; font-weight: 800; margin-bottom: 4px; }
+    .calendar-event strong { display: block; font-size: .8rem; line-height: 1.3; }
+    .calendar-event small { display: block; color: var(--muted); margin-top: 5px; line-height: 1.35; }
+    .note-state { display: inline-block; margin-top: 7px; color: var(--amber); font-size: .7rem; font-weight: 800; }
+    .calendar-empty { color: #637795; font-size: .76rem; }
+    dialog { width: min(560px, calc(100% - 32px)); border: 1px solid #315074; border-radius: 18px; padding: 0; color: var(--text); background: #0e1a2d; box-shadow: 0 30px 90px rgba(0,0,0,.6); }
+    dialog::backdrop { background: rgba(3,8,15,.74); backdrop-filter: blur(5px); }
+    .note-dialog { padding: 22px; }
+    .note-dialog h2 { font-size: 1.2rem; }
+    .note-dialog p { margin: 8px 0 18px; color: var(--muted); font-size: .86rem; }
+    .note-dialog label { display: block; margin-bottom: 8px; font-size: .82rem; font-weight: 800; }
+    .note-dialog textarea { width: 100%; min-height: 170px; resize: vertical; padding: 13px; border: 1px solid #2a4261; border-radius: 12px; background: #081321; color: var(--text); line-height: 1.5; }
+    .note-dialog textarea:focus { border-color: var(--green); outline: 3px solid rgba(94,225,178,.09); }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 16px; }
+    .dialog-btn { border: 1px solid #315074; background: #102039; color: var(--text); border-radius: 10px; padding: 10px 14px; font-weight: 800; }
+    .dialog-btn.primary { border-color: var(--green); background: var(--green); color: #061017; }
+    .toast { position: fixed; right: 24px; bottom: 24px; background: #f4f8ff; color: #0a1424; padding: 12px 16px; border-radius: 12px; font-weight: 750; box-shadow: var(--shadow); transform: translateY(100px); opacity: 0; transition: .25s; z-index: 30; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: 1fr; }
+      .commander { position: static; }
+      .news-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      .topbar { height: 64px; }
+      .brand .wordmark { display: none; }
+      .fresh { font-size: .76rem; }
+      main { padding-top: 24px; }
+      .intro { display: block; }
+      .datebox { text-align: left; margin-top: 18px; }
+      .stats { grid-template-columns: 1fr; }
+      .priority { grid-template-columns: 38px minmax(0,1fr); }
+      .actions { grid-column: 2; }
+      .panel { padding: 17px; }
+      .order-summary { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div style="padding:10px 20px;text-align:center;background:#14243a;color:#c8d7ef;font:14px system-ui">Lokale Demo · Datenstand 09.10.2026 · Testdaten eingebettet · Keine Live-KI-Verbindung · Quellenlinks benötigen Internet</div>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4v16h5v-4H9V8h1V4H5Zm9 0v4h1v8h-1v4h5V4h-5Z" fill="currentColor"/></svg></div>
+        <span class="wordmark">KI Commander</span>
+        <span class="demo">MVP · Demo · Fiktive Daten</span>
+      </div>
+      <div class="fresh" id="data-freshness"><span class="pulse"></span>Demo-Daten werden geladen …</div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">Tagessteuerung Vertrieb</p>
+          <h1 id="greeting">Guten Tag</h1>
+          <p>Dein Demo-Überblick: Chancen, Aufträge, Lager und Zahlungen.</p>
+        </div>
+        <div class="datebox"><strong id="date">–</strong><span id="daily-summary">Daten werden geladen</span><button class="refresh-btn" id="refresh-all" type="button">Dashboard aktualisieren</button></div>
+      </section>
+
+      <div class="grid">
+        <div>
+          <section class="stats" aria-label="Vertriebskennzahlen">
+            <article class="stat"><span>Offene Pipeline</span><strong id="pipeline-value">–</strong><span class="trend" id="pipeline-note">aus Demo-CRM</span></article>
+            <article class="stat"><span>Gewichtete Pipeline</span><strong id="expected-value">–</strong><span class="trend" id="target-note">–</span></article>
+            <article class="stat"><span>Chancen mit Risiko</span><strong id="risk-count">–</strong><span class="trend warn" id="risk-note">–</span></article>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><h2>Heute im Fokus</h2><span class="subtle">Nach Wirkung und Dringlichkeit priorisiert</span></div><span class="badge" id="recommendation-count">–</span></div>
+            <div class="priorities" id="priorities"><span class="subtle">Prioritäten werden berechnet …</span></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><h2>Demo-Kalender</h2><span class="subtle">Wochenübersicht · Termine öffnen, Notizen lokal speichern</span></div><span class="badge">Demo</span></div>
+            <div class="calendar-wrap">
+              <div class="calendar-week" id="calendar-week" aria-label="Demo-Kalender für diese Woche"><span class="subtle">Demo-Termine werden geladen …</span></div>
+            </div>
+            <div class="source-state">Notizen werden nur in diesem Browser gespeichert und nicht an ein echtes Kalendersystem übertragen.</div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><h2>Aktive Verkaufschancen</h2><span class="subtle">Die wichtigsten Fälle für diesen Monat</span></div></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Kunde</th><th>Volumen</th><th>Phase</th><th>Signal</th><th>Nächster Schritt</th></tr></thead>
+                <tbody id="opportunities-table"><tr><td colspan="5" class="subtle">Demo-Verkaufschancen werden geladen …</td></tr></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><h2>Eingegangene Aufträge</h2><span class="subtle">Separate operative Demo-ERP-Datenquelle</span></div><button class="refresh-btn" id="refresh-orders" type="button">Aufträge neu laden</button></div>
+            <div class="order-summary" aria-label="Kennzahlen zum Demo-Auftragseingang">
+              <div class="order-kpi"><span>Aufträge</span><strong id="orders-count">–</strong></div>
+              <div class="order-kpi"><span>Auftragseingang</span><strong id="orders-value">–</strong></div>
+              <div class="order-kpi"><span>Prüfung offen</span><strong id="orders-review">–</strong></div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Auftrag</th><th>Kunde</th><th>Eingang</th><th>Wert</th><th>Status</th><th>Liefertermin</th></tr></thead>
+                <tbody id="orders-table"><tr><td colspan="6" class="subtle">Demo-Aufträge werden geladen …</td></tr></tbody>
+              </table>
+            </div>
+            <div class="source-state" id="orders-source-state">Noch kein Abruf erfolgt.</div>
+          </section>
+
+          <section class="panel" id="inventory-panel">
+            <div class="panel-head"><div><h2>Produkte & Lagerbestand</h2><span class="subtle">Demo-Lager · Reservierungen und Verfügbarkeit</span></div><button class="refresh-btn" id="refresh-inventory" type="button">Lager neu laden</button></div>
+            <div class="order-summary"><div class="order-kpi"><span>Produkte</span><strong id="inventory-count">–</strong></div><div class="order-kpi"><span>Unter Mindestbestand</span><strong id="inventory-low">–</strong></div><div class="order-kpi"><span>Überreserviert</span><strong id="inventory-shortage">–</strong></div></div>
+            <div class="table-wrap"><table><thead><tr><th>Produkt / Kunde</th><th>Bestand</th><th>Reserviert</th><th>Frei</th><th>Status</th><th>Zugang geplant</th></tr></thead><tbody id="inventory-table"></tbody></table></div>
+            <div class="source-state" id="inventory-source-state">Wird geladen …</div>
+          </section>
+          <section class="panel" id="invoices-panel">
+            <div class="panel-head"><div><h2>Rechnungen & offene Zahlungen</h2><span class="subtle">Demo-Buchhaltung · Alle Beträge netto</span></div><button class="refresh-btn" id="refresh-invoices" type="button">Rechnungen neu laden</button></div>
+            <div class="order-summary"><div class="order-kpi"><span>Offener Betrag</span><strong id="invoices-open">–</strong></div><div class="order-kpi"><span>Überfällig</span><strong id="invoices-overdue">–</strong></div><div class="order-kpi"><span>Überfällige Rechnungen</span><strong id="invoices-count">–</strong></div></div>
+            <div class="table-wrap"><table><thead><tr><th>Rechnung / Kunde</th><th>Nettowert</th><th>Bezahlt</th><th>Offen</th><th>Fällig</th><th>Status</th></tr></thead><tbody id="invoices-table"></tbody></table></div>
+            <div class="source-state" id="invoices-source-state">Wird geladen …</div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><div><h2>Kunden-News</h2><span class="subtle">Kontrollierte Demo-Webseiten · Fakt, Interpretation und Empfehlung getrennt</span></div><button class="refresh-btn" id="refresh-news" type="button">Quellen neu laden</button></div>
+            <div class="news-list" id="customer-news"><span class="subtle">Kundenwebseiten werden abgerufen …</span></div>
+            <div class="source-state" id="news-source-state">Noch kein Abruf erfolgt.</div>
+          </section>
+        </div>
+
+        <aside class="commander">
+          <section class="panel">
+            <div class="ai-head"><div class="ai-orb" aria-hidden="true">✦</div><div><strong>Dein Commander</strong><span id="commander-source">Wartet auf Demo-Datenquelle</span></div></div>
+            <div class="briefing" id="briefing"><strong>Tagesbriefing:</strong> Die Demo-Daten werden geladen und geprüft.</div>
+            <div class="quick">
+              <button class="chip" data-question="risks">Wo verliere ich Umsatz?</button>
+              <button class="chip" data-question="meeting">Bereite Apex vor</button>
+              <button class="chip" data-question="next">Was ist jetzt wichtig?</button>
+              <button class="chip" data-question="news">Was gibt es Neues?</button>
+              <button class="chip" data-question="orders">Welche Aufträge kamen rein?</button>
+              <button class="chip" data-question="inventory">Wo fehlt Bestand?</button>
+              <button class="chip" data-question="invoices">Welche Zahlungen sind offen?</button>
+            </div>
+            <form class="ask" id="ask-form">
+              <input id="ask-input" aria-label="Frage an den KI Commander" placeholder="Frage deinen Commander …" autocomplete="off">
+              <button class="send" type="submit" aria-label="Frage senden">Senden</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2>Signale</h2><span class="subtle">Demo-CRM</span></div>
+            <div class="signal-list" id="signals"><span class="subtle">Signale werden geladen …</span></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="note-dialog">
+    <form class="note-dialog" id="note-form" method="dialog">
+      <h2 id="note-title">Terminnotiz</h2>
+      <p id="note-meta">Demo-Termin</p>
+      <label for="note-text">Notizen zum Termin</label>
+      <textarea id="note-text" maxlength="3000" placeholder="Gesprächspunkte, Fragen oder nächste Schritte notieren …"></textarea>
+      <div class="dialog-actions">
+        <button class="dialog-btn" value="cancel" type="button" id="cancel-note">Abbrechen</button>
+        <button class="dialog-btn primary" value="save" type="submit">Notiz speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite" id="toast"></div>
+  <script>(() => {
+const embeddedDemoData = {"./data/sales-demo.json": {"metadata": {"dataset_id": "sales-demo-de-001", "schema_version": "1.0", "mode": "DEMO", "generated_at": "2026-10-09T15:20:00+02:00", "currency": "EUR", "completeness_percent": 100, "sources": [{"name": "Demo-CRM", "status": "available", "records": 6}, {"name": "Demo-Aufträge", "status": "available", "records": 5}, {"name": "Demo-Kalender", "status": "available", "records": 4}]}, "sales_rep": {"id": "SR-001", "name": "Alex", "region": "Südwest", "monthly_target_eur": 210000}, "opportunities": [{"id": "nordstern-call", "customer": "Nordstern GmbH", "industry": "Industrie", "employees": 320, "volume_eur": 48000, "probability_percent": 55, "stage": "Angebot", "status": "risk", "status_label": "Risiko", "last_activity": "2026-10-03", "deadline": "2026-10-13", "next_action": "Heute anrufen", "priority_score": 96, "fact": "Angebot über 48.000 €; seit sechs Tagen keine Rückmeldung; Frist am 13.10.2026.", "interpretation": "Ohne zeitnahen Kontakt steigt das Verzögerungs- oder Verlustrisiko.", "recommendation": "Heute anrufen und einen verbindlichen nächsten Schritt vereinbaren.", "signals": ["Angebot läuft in vier Tagen aus", "Sechs Tage ohne Rückmeldung"], "source": "Demo-CRM"}, {"id": "apex-prepare", "customer": "Apex Solutions", "industry": "IT-Services", "employees": 180, "volume_eur": 72000, "probability_percent": 60, "stage": "Bedarf", "status": "positive", "status_label": "Positiv", "last_activity": "2026-10-08", "deadline": null, "next_action": "Termin 11:30", "priority_score": 90, "fact": "Termin heute um 11:30 Uhr; Interesse an einer Erweiterung auf 120 Nutzer.", "interpretation": "Die Erweiterung bietet das höchste kurzfristige Potenzial.", "recommendation": "Migration, Support und Schulung als offene Punkte vorbereiten.", "signals": ["Termin bestätigt", "Erweiterung auf 120 Nutzer angefragt"], "source": "Demo-CRM"}, {"id": "hansa-followup", "customer": "Hansa Retail", "industry": "Handel", "employees": 640, "volume_eur": 36500, "probability_percent": 65, "stage": "Bewertung", "status": "positive", "status_label": "Aktiv", "last_activity": "2026-10-08", "deadline": null, "next_action": "Follow-up senden", "priority_score": 82, "fact": "Die Preisübersicht wurde gestern erneut geöffnet; ein nächster Schritt fehlt.", "interpretation": "Das wiederholte Öffnen ist ein mögliches Kaufsignal.", "recommendation": "Ein kurzes Follow-up mit einer konkreten Terminoption vorbereiten.", "signals": ["Preisübersicht zum dritten Mal geöffnet"], "source": "Demo-CRM"}, {"id": "rheinwerk-review", "customer": "Rheinwerk AG", "industry": "Produktion", "employees": 910, "volume_eur": 95000, "probability_percent": 25, "stage": "Verhandlung", "status": "risk", "status_label": "Stillstand", "last_activity": "2026-09-27", "deadline": null, "next_action": "Entscheider klären", "priority_score": 74, "fact": "Seit zwölf Tagen ist keine Aktivität im Verkaufsfall dokumentiert.", "interpretation": "Der Verkaufsfall könnte ohne klaren Entscheider ins Stocken geraten.", "recommendation": "Entscheider und internen Freigabeprozess des Kunden klären.", "signals": ["Zwölf Tage ohne Aktivität"], "source": "Demo-CRM"}, {"id": "bergblick-qualify", "customer": "Bergblick Pharma", "industry": "Pharma", "employees": 460, "volume_eur": 82000, "probability_percent": 30, "stage": "Qualifizierung", "status": "risk", "status_label": "Unklar", "last_activity": "2026-10-01", "deadline": "2026-10-18", "next_action": "Bedarf validieren", "priority_score": 62, "fact": "Budget und Zeitplan sind noch nicht bestätigt.", "interpretation": "Die Chance ist noch nicht ausreichend qualifiziert.", "recommendation": "Budget, Zeitrahmen und Entscheider im nächsten Gespräch prüfen.", "signals": ["Budget nicht bestätigt"], "source": "Demo-CRM"}, {"id": "elbe-reconnect", "customer": "Elbe Logistik", "industry": "Logistik", "employees": 730, "volume_eur": 94500, "probability_percent": 22, "stage": "Bedarf", "status": "risk", "status_label": "Risiko", "last_activity": "2026-09-25", "deadline": null, "next_action": "Kontakt reaktivieren", "priority_score": 58, "fact": "Seit vierzehn Tagen ist keine neue Aktivität dokumentiert.", "interpretation": "Interesse und Zeitplan des Kunden sind nicht mehr belastbar.", "recommendation": "Kontakt reaktivieren und aktuellen Bedarf erneut bestätigen.", "signals": ["Vierzehn Tage ohne Aktivität"], "source": "Demo-CRM"}], "appointments": [{"id": "APT-1001", "customer": "Apex Solutions", "starts_at": "2026-10-09T11:30:00+02:00", "goal": "Erweiterung auf 120 Nutzer qualifizieren", "open_points": ["Migration", "Support", "Schulung"], "source": "Demo-Kalender"}, {"id": "APT-1002", "customer": "Kronenwerke SE", "starts_at": "2026-10-09T15:00:00+02:00", "goal": "Erstgespräch und Bedarf klären", "open_points": ["Projektumfang", "Entscheider"], "source": "Demo-Kalender"}, {"id": "APT-1003", "customer": "Hansa Retail", "starts_at": "2026-10-08T10:00:00+02:00", "goal": "Preisübersicht und nächste Entscheidung besprechen", "open_points": ["Zeitplan", "Freigabeprozess"], "source": "Demo-Kalender"}, {"id": "APT-1004", "customer": "Rheinwerk AG", "starts_at": "2026-10-07T14:00:00+02:00", "goal": "Entscheider und Projektstatus klären", "open_points": ["Entscheider", "Nächster Meilenstein"], "source": "Demo-Kalender"}], "customer_signals": [{"customer": "Hansa Retail", "type": "buying_signal", "title": "Hansa zeigt Kaufinteresse", "detail": "Preisübersicht zum dritten Mal geöffnet.", "recorded_at": "2026-10-08T16:40:00+02:00", "source": "Demo-CRM"}, {"customer": "Rheinwerk AG", "type": "warning", "title": "Rheinwerk stagniert", "detail": "Seit zwölf Tagen keine Aktivität im Verkaufsfall.", "recorded_at": "2026-10-09T08:15:00+02:00", "source": "Demo-CRM"}, {"customer": "Nordstern GmbH", "type": "risk", "title": "Nordstern braucht Aufmerksamkeit", "detail": "Angebot läuft in vier Tagen aus.", "recorded_at": "2026-10-09T08:15:00+02:00", "source": "Demo-CRM"}], "permissions": {"crm_read": true, "crm_write": false, "email_draft": true, "email_send": false, "calendar_read": true, "calendar_write": false}}, "./data/invoices-demo.json": {"metadata": {"mode": "DEMO", "source": "Demo-Buchhaltung", "generated_at": "2026-10-09T15:20:00+02:00", "schema_version": "1.0", "currency": "EUR", "as_of": "2026-10-09"}, "invoices": [{"id": "RE-DEMO-1001", "customer": "Nordstern GmbH", "net_eur": 18000, "paid_eur": 0, "due_date": "2026-10-02"}, {"id": "RE-DEMO-1002", "customer": "Hansa Retail", "net_eur": 24600, "paid_eur": 10000, "due_date": "2026-10-07"}, {"id": "RE-DEMO-1003", "customer": "Apex Solutions", "net_eur": 31800, "paid_eur": 0, "due_date": "2026-10-23"}, {"id": "RE-DEMO-1004", "customer": "Rheinwerk AG", "net_eur": 18900, "paid_eur": 18900, "due_date": "2026-10-01"}, {"id": "RE-DEMO-1005", "customer": "Bergblick Pharma", "net_eur": 42500, "paid_eur": 0, "due_date": "2026-10-30"}, {"id": "RE-DEMO-1006", "customer": "Elbe Logistik", "net_eur": 9600, "paid_eur": 0, "due_date": "2026-10-05"}]}, "./data/inventory-demo.json": {"metadata": {"mode": "DEMO", "source": "Demo-Lager", "generated_at": "2026-10-09T15:20:00+02:00", "schema_version": "1.0"}, "products": [{"id": "PR-1001", "name": "EDI Gateway Hardware", "stock": 8, "reserved": 6, "minimum": 3, "unit": "Stück", "customer": "Nordstern GmbH", "next_receipt": "2026-10-14"}, {"id": "PR-1002", "name": "Filialrouter", "stock": 12, "reserved": 15, "minimum": 5, "unit": "Stück", "customer": "Hansa Retail", "next_receipt": "2026-10-16"}, {"id": "PR-1003", "name": "Integrationsserver", "stock": 10, "reserved": 2, "minimum": 4, "unit": "Stück", "customer": "Apex Solutions", "next_receipt": null}, {"id": "PR-1004", "name": "Industrie-PC", "stock": 6, "reserved": 2, "minimum": 2, "unit": "Stück", "customer": "Rheinwerk AG", "next_receipt": null}, {"id": "PR-1005", "name": "Validierungsgerät", "stock": 3, "reserved": 3, "minimum": 1, "unit": "Stück", "customer": "Bergblick Pharma", "next_receipt": "2026-10-20"}, {"id": "PR-1006", "name": "Mobiler Scanner", "stock": 25, "reserved": 8, "minimum": 10, "unit": "Stück", "customer": "Elbe Logistik", "next_receipt": null}]}, "./data/customer-websites.json": {"mode": "DEMO", "source_name": "Kontrollierte Demo-Kundenwebseiten", "sites": [{"customer_id": "nordstern", "customer_name": "Nordstern GmbH", "website_url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/nordstern/", "feed_url": "./demo-customers/nordstern/news.json"}, {"customer_id": "apex", "customer_name": "Apex Solutions", "website_url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/apex/", "feed_url": "./demo-customers/apex/news.json"}, {"customer_id": "hansa", "customer_name": "Hansa Retail", "website_url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/hansa/", "feed_url": "./demo-customers/hansa/news.json"}]}, "./data/orders-demo.json": {"metadata": {"dataset_id": "orders-demo-de-001", "schema_version": "1.0", "mode": "DEMO", "source": "Demo-ERP", "generated_at": "2026-10-09T15:20:00+02:00", "currency": "EUR", "completeness_percent": 100}, "orders": [{"order_id": "AO-2026-1042", "customer": "Apex Solutions", "received_at": "2026-10-09T09:18:00+02:00", "net_value_eur": 31800, "product": "Integrationspaket Enterprise", "status": "confirmed", "status_label": "Bestätigt", "requested_delivery_date": "2026-10-30", "fact": "Auftrag AO-2026-1042 über 31.800 € ist im Demo-ERP als bestätigt erfasst.", "interpretation": "Der Auftrag ist vollständig erfasst und kann in die operative Übergabe gehen.", "recommendation": "Projektübergabe und Liefertermin intern vorbereiten."}, {"order_id": "AO-2026-1041", "customer": "Hansa Retail", "received_at": "2026-10-08T15:42:00+02:00", "net_value_eur": 24600, "product": "Filialanbindung · Paket 2", "status": "review", "status_label": "Prüfung offen", "requested_delivery_date": "2026-11-06", "fact": "Auftrag AO-2026-1041 über 24.600 € ist eingegangen; die kaufmännische Prüfung ist noch offen.", "interpretation": "Der Auftragseingang ist dokumentiert, aber noch nicht zur Ausführung freigegeben.", "recommendation": "Zahlungsbedingungen und Leistungsumfang prüfen lassen."}, {"order_id": "AO-2026-1040", "customer": "Rheinwerk AG", "received_at": "2026-10-08T11:05:00+02:00", "net_value_eur": 18900, "product": "Serviceverlängerung 12 Monate", "status": "confirmed", "status_label": "Bestätigt", "requested_delivery_date": "2026-10-10", "fact": "Auftrag AO-2026-1040 über 18.900 € ist im Demo-ERP bestätigt.", "interpretation": "Die Serviceverlängerung kann ohne offene Auftragsprüfung eingeplant werden.", "recommendation": "Verlängerung an Service und Abrechnung übergeben."}, {"order_id": "AO-2026-1039", "customer": "Bergblick Pharma", "received_at": "2026-10-07T13:27:00+02:00", "net_value_eur": 42500, "product": "Validierung und Dokumentation", "status": "review", "status_label": "Prüfung offen", "requested_delivery_date": null, "fact": "Auftrag AO-2026-1039 über 42.500 € ist eingegangen; ein Liefertermin ist nicht hinterlegt.", "interpretation": "Vor der Bestätigung fehlen noch terminliche Angaben.", "recommendation": "Liefertermin und Abnahmekriterien mit dem Kunden klären."}, {"order_id": "AO-2026-1038", "customer": "Nordstern GmbH", "received_at": "2026-10-06T10:12:00+02:00", "net_value_eur": 36200, "product": "Wartungsmodul Produktion", "status": "confirmed", "status_label": "Bestätigt", "requested_delivery_date": "2026-10-25", "fact": "Auftrag AO-2026-1038 über 36.200 € ist im Demo-ERP bestätigt.", "interpretation": "Der Auftrag kann für die technische Übergabe vorbereitet werden.", "recommendation": "Ansprechpartner und Starttermin für die Übergabe bestätigen."}]}, "./demo-customers/hansa/news.json": {"mode": "DEMO", "customer_id": "hansa", "customer_name": "Hansa Retail", "source_type": "Demo-Kundenwebseite", "updated_at": "2026-10-06T06:45:00Z", "items": [{"id": "hansa-expansion", "title": "Neue Filialen und Ausbau des Onlinegeschäfts", "published_at": "2026-10-06T06:45:00Z", "category": "Expansion", "excerpt": "Zwei zusätzliche Standorte und mehr Logistikkapazität sind geplant.", "fact": "Hansa Retail plant zwei neue Standorte und erweitert die Onlineshop-Logistik.", "interpretation": "Expansion und Logistikausbau können die Anforderungen an Warenwirtschaft, Bestände und Filialanbindung erhöhen.", "recommendation": "Follow-up auf Expansionszeitplan, Filialprozesse und Logistik-Schnittstellen ausrichten.", "relevance": 94, "url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/hansa/#expansion"}, {"id": "hansa-charity", "title": "Teams sammeln beim Spendenlauf für den guten Zweck", "published_at": "2026-09-19T08:00:00Z", "category": "Engagement", "excerpt": "Mehr als 80 Mitarbeitende nahmen am regionalen Firmenlauf teil.", "fact": "Hansa Retail berichtet über die Teilnahme an einem Spendenlauf.", "interpretation": "Für die aktuelle Verkaufschance ist kein belastbarer operativer Bezug erkennbar.", "recommendation": "Keine Vertriebsaktion ableiten.", "relevance": 10, "url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/hansa/#spendenlauf"}]}, "./demo-customers/nordstern/news.json": {"mode": "DEMO", "customer_id": "nordstern", "customer_name": "Nordstern GmbH", "source_type": "Demo-Kundenwebseite", "updated_at": "2026-10-07T08:00:00Z", "items": [{"id": "nordstern-production", "title": "Neue Produktionslinie am Standort Stuttgart geplant", "published_at": "2026-10-07T08:00:00Z", "category": "Investition", "excerpt": "Nordstern plant für das kommende Quartal eine zusätzliche Montagelinie.", "fact": "Nordstern kündigt eine zusätzliche Montagelinie am Standort Stuttgart an.", "interpretation": "Der geplante Kapazitätsausbau kann zusätzlichen Bedarf an Automatisierungs- und Warenwirtschaftslösungen erzeugen.", "recommendation": "Im nächsten Gespräch Zeitplan, Systeme und Beschaffungsprozess für die neue Linie klären.", "relevance": 96, "url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/nordstern/#produktionslinie"}, {"id": "nordstern-running", "title": "Nordstern-Laufgruppe startet in die Herbstsaison", "published_at": "2026-09-27T09:00:00Z", "category": "Mitarbeitende", "excerpt": "Das interne Sportprogramm wird um zwei Trainingstermine erweitert.", "fact": "Nordstern erweitert sein internes Sportprogramm.", "interpretation": "Für die aktuelle Verkaufschance ist kein belastbarer Geschäftsbezug erkennbar.", "recommendation": "Nur als allgemeines Beziehungssignal notieren; keine Vertriebsaktion ableiten.", "relevance": 18, "url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/nordstern/#laufgruppe"}]}, "./demo-customers/apex/news.json": {"mode": "DEMO", "customer_id": "apex", "customer_name": "Apex Solutions", "source_type": "Demo-Kundenwebseite", "updated_at": "2026-10-08T07:30:00Z", "items": [{"id": "apex-portfolio", "title": "Apex erweitert sein Lösungsportfolio", "published_at": "2026-10-08T07:30:00Z", "category": "Portfolio", "excerpt": "Eine neue Integrationsplattform wird in das Portfolio aufgenommen.", "fact": "Apex kündigt eine neue Integrationsplattform und Pilotprojekte im vierten Quartal an.", "interpretation": "Die Erweiterung kann neue Integrationsanforderungen und kurzfristigen Abstimmungsbedarf auslösen.", "recommendation": "Im anstehenden Termin nach Pilotumfang, Schnittstellen und Entscheidungskriterien fragen.", "relevance": 98, "url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/apex/#portfolio"}, {"id": "apex-summer", "title": "Sommerfest bringt die Teams zusammen", "published_at": "2026-09-21T10:00:00Z", "category": "Kultur", "excerpt": "Apex berichtet über Workshops, Sport und ein gemeinsames Abendessen.", "fact": "Apex hat einen internen Teamtag durchgeführt.", "interpretation": "Die Meldung liefert keinen belastbaren Hinweis für die offene Verkaufschance.", "recommendation": "Keine Aktion; Meldung als nicht vertriebsrelevant kennzeichnen.", "relevance": 12, "url": "https://ki-commander-vertrieb.ki-consultan-3592.chatgpt.site/demo-customers/apex/#sommerfest"}]}};
+async function fetch(path) { const data=embeddedDemoData[path]; if (!data) throw new Error("Demoquelle nicht enthalten: " + path); return {ok:true,status:200,json:async()=>JSON.parse(JSON.stringify(data))}; }
+
+  const toast = document.getElementById('toast');
+  const briefing = document.getElementById('briefing');
+  const euro = new Intl.NumberFormat('de-DE', {style: 'currency', currency: 'EUR', maximumFractionDigits: 0});
+  const notesStorageKey = 'ki-commander-demo-calendar-notes-v1';
+  const state = {data: null, news: [], orders: [], completed: new Set(), answers: {}, calendarNotes: {}, activeAppointmentId: null};
+
+  try {
+    state.calendarNotes = JSON.parse(localStorage.getItem(notesStorageKey) || '{}');
+  } catch {
+    state.calendarNotes = {};
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+    })[character]);
+  }
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('show');
+    window.setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  function statusClass(status) {
+    if (status === 'risk') return 'risk';
+    if (status === 'warning') return 'warn';
+    return '';
+  }
+
+  function actionTitle(opportunity) {
+    if (opportunity.id === 'apex-prepare') return 'Termin mit ' + opportunity.customer + ' vorbereiten';
+    if (opportunity.id === 'hansa-followup') return 'Follow-up an ' + opportunity.customer + ' vorbereiten';
+    return opportunity.next_action + ': ' + opportunity.customer;
+  }
+
+  function startOfWeek(date) {
+    const result = new Date(date);
+    const weekday = (result.getDay() + 6) % 7;
+    result.setDate(result.getDate() - weekday);
+    result.setHours(0, 0, 0, 0);
+    return result;
+  }
+
+  function renderCalendar(appointments, referenceDate) {
+    const week = document.getElementById('calendar-week');
+    const firstDay = startOfWeek(referenceDate);
+    const days = Array.from({length: 7}, (_, index) => {
+      const day = new Date(firstDay);
+      day.setDate(firstDay.getDate() + index);
+      return day;
+    });
+    const dateKey = value => {
+      const date = new Date(value);
+      return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+    };
+    const todayKey = dateKey(referenceDate);
+
+    week.innerHTML = days.map(day => {
+      const key = dateKey(day);
+      const items = appointments.filter(item => dateKey(item.starts_at) === key);
+      return `
+        <section class="calendar-day ${key === todayKey ? 'today' : ''}">
+          <div class="calendar-day-head"><strong>${new Intl.DateTimeFormat('de-DE', {weekday: 'short'}).format(day)}</strong><span>${new Intl.DateTimeFormat('de-DE', {day: '2-digit', month: '2-digit'}).format(day)}</span></div>
+          <div class="calendar-events">
+            ${items.length ? items.map(item => `
+              <button class="calendar-event" type="button" data-appointment-id="${escapeHtml(item.id)}" aria-label="Notiz für Termin mit ${escapeHtml(item.customer)} öffnen">
+                <time>${new Intl.DateTimeFormat('de-DE', {hour: '2-digit', minute: '2-digit'}).format(new Date(item.starts_at))} Uhr</time>
+                <strong>${escapeHtml(item.customer)}</strong>
+                <small>${escapeHtml(item.goal)}</small>
+                <span class="note-state">${state.calendarNotes[item.id] ? 'Notiz vorhanden' : 'Notiz hinzufügen'}</span>
+              </button>
+            `).join('') : '<span class="calendar-empty">Keine Termine</span>'}
+          </div>
+        </section>`;
+    }).join('');
+
+    week.querySelectorAll('[data-appointment-id]').forEach(button => button.addEventListener('click', () => {
+      const appointment = appointments.find(item => item.id === button.dataset.appointmentId);
+      if (!appointment) return;
+      state.activeAppointmentId = appointment.id;
+      document.getElementById('note-title').textContent = appointment.customer;
+      document.getElementById('note-meta').textContent =
+        new Intl.DateTimeFormat('de-DE', {weekday: 'long', day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit'}).format(new Date(appointment.starts_at)) +
+        ' Uhr · ' + appointment.goal;
+      document.getElementById('note-text').value = state.calendarNotes[appointment.id] || '';
+      document.getElementById('note-dialog').showModal();
+      document.getElementById('note-text').focus();
+    }));
+  }
+
+  function bindTaskButtons() {
+    document.querySelectorAll('.done-btn').forEach(button => button.addEventListener('click', () => {
+      const task = button.closest('[data-task]');
+      const taskId = task.dataset.taskId;
+      task.classList.toggle('done');
+      if (task.classList.contains('done')) state.completed.add(taskId);
+      else state.completed.delete(taskId);
+      showToast(task.classList.contains('done') ? 'Aufgabe als erledigt markiert' : 'Aufgabe wieder geöffnet');
+    }));
+    document.querySelectorAll('.snooze-btn').forEach(button => button.addEventListener('click', () => {
+      showToast('Demo-Aktion: Aufgabe auf morgen verschoben');
+    }));
+  }
+
+  function buildAnswers(data, priorities, riskOpportunities) {
+    const topRisks = riskOpportunities.slice(0, 2);
+    const appointment = data.appointments[0];
+    const first = priorities[0];
+
+    state.answers = {...state.answers,
+      risks: '<strong>Fakt:</strong> ' + topRisks.map(item => escapeHtml(item.customer) + ' (' + euro.format(item.volume_eur) + ')').join(' und ') +
+        ' sind die größten sichtbaren Risikofälle. <strong>Interpretation:</strong> ' + escapeHtml(topRisks[0]?.interpretation || 'Keine belastbare Einordnung verfügbar.') +
+        ' <strong>Empfehlung:</strong> ' + escapeHtml(topRisks[0]?.recommendation || 'Daten fachlich prüfen.'),
+      meeting: appointment
+        ? '<strong>Fakt:</strong> Der Termin mit ' + escapeHtml(appointment.customer) + ' beginnt um ' +
+          new Intl.DateTimeFormat('de-DE', {hour: '2-digit', minute: '2-digit'}).format(new Date(appointment.starts_at)) +
+          ' Uhr. <strong>Ziel:</strong> ' + escapeHtml(appointment.goal) +
+          '. <strong>Offene Punkte:</strong> ' + appointment.open_points.map(escapeHtml).join(', ') + '.'
+        : '<strong>Hinweis:</strong> Im Demo-Kalender ist kein Termin vorhanden.',
+      next: first
+        ? '<strong>Jetzt zuerst:</strong> ' + escapeHtml(actionTitle(first)) + '. <strong>Fakt:</strong> ' +
+          escapeHtml(first.fact) + ' <strong>Empfehlung:</strong> ' + escapeHtml(first.recommendation)
+        : '<strong>Hinweis:</strong> Es konnte keine Priorität berechnet werden.',
+      news: buildNewsAnswer(),
+      orders: buildOrdersAnswer()
+    };
+  }
+
+  function buildOrdersAnswer() {
+    if (!state.orders.length) return '<strong>Hinweis:</strong> Es wurden noch keine geprüften Demo-Aufträge geladen.';
+    const total = state.orders.reduce((sum, item) => sum + item.net_value_eur, 0);
+    const reviews = state.orders.filter(item => item.status === 'review');
+    return '<strong>Fakt:</strong> In der Demo-Datenquelle sind ' + state.orders.length + ' eingegangene Aufträge mit insgesamt ' +
+      euro.format(total) + ' erfasst. ' + reviews.length + ' Aufträge befinden sich noch in Prüfung. ' +
+      '<strong>Interpretation:</strong> Der Auftragseingang ist getrennt von der offenen Pipeline ausgewiesen. ' +
+      '<strong>Empfehlung:</strong> ' + (reviews.length ? 'Zuerst ' + escapeHtml(reviews[0].customer) + ' prüfen: ' + escapeHtml(reviews[0].recommendation) : 'Keine offene Auftragsprüfung vorhanden.');
+  }
+
+  function renderOrders(data, fetchedAt) {
+    const orders = [...data.orders].sort((a, b) => new Date(b.received_at) - new Date(a.received_at));
+    const total = orders.reduce((sum, item) => sum + item.net_value_eur, 0);
+    const reviews = orders.filter(item => item.status === 'review');
+    state.orders = orders;
+    document.getElementById('orders-count').textContent = orders.length;
+    document.getElementById('orders-value').textContent = euro.format(total);
+    document.getElementById('orders-review').textContent = reviews.length;
+    document.getElementById('orders-table').innerHTML = orders.map(item => `
+      <tr>
+        <td><strong>${escapeHtml(item.order_id)}</strong><small>${escapeHtml(item.product)}</small></td>
+        <td>${escapeHtml(item.customer)}</td>
+        <td>${new Intl.DateTimeFormat('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'}).format(new Date(item.received_at))}</td>
+        <td>${euro.format(item.net_value_eur)}</td>
+        <td><span class="badge ${item.status === 'review' ? 'warn' : ''}">${escapeHtml(item.status_label)}</span></td>
+        <td>${item.requested_delivery_date ? new Intl.DateTimeFormat('de-DE').format(new Date(item.requested_delivery_date + 'T12:00:00')) : '<span class="badge risk">Offen</span>'}</td>
+      </tr>
+    `).join('');
+    document.getElementById('orders-source-state').textContent =
+      data.metadata.source + ' · DEMO · ' + data.metadata.completeness_percent + ' % vollständig · eingebettete Daten geladen ' +
+      new Intl.DateTimeFormat('de-DE', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit'}).format(fetchedAt) + ' Uhr';
+    state.answers.orders = buildOrdersAnswer();
+  }
+
+  async function loadOrdersData() {
+    const button = document.getElementById('refresh-orders');
+    button.disabled = true;
+    document.getElementById('orders-source-state').textContent = 'Demo-Auftragsquelle wird geprüft …';
+    try {
+      const response = await fetch('./data/orders-demo.json', {cache: 'no-store'});
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const data = await response.json();
+      if (data.metadata?.mode !== 'DEMO' || !Array.isArray(data.orders)) throw new Error('Ungültiges Demo-Auftragsformat');
+      renderOrders(data, new Date());
+      showToast('Demo-Aufträge wurden neu geladen');
+    } catch (error) {
+      state.orders = [];
+      state.answers.orders = '<strong>Quellenfehler:</strong> Die Demo-Auftragsquelle konnte nicht geprüft werden. Es wurden keine Aufträge oder Werte erfunden.';
+      document.getElementById('orders-count').textContent = '–';
+      document.getElementById('orders-value').textContent = '–';
+      document.getElementById('orders-review').textContent = '–';
+      document.getElementById('orders-table').innerHTML = '<tr><td colspan="6">Keine belastbaren Demo-Auftragsdaten verfügbar.</td></tr>';
+      document.getElementById('orders-source-state').textContent = 'Abruf fehlgeschlagen: ' + error.message;
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  function buildNewsAnswer() {
+    const top = state.news[0];
+    if (!top) return '<strong>Hinweis:</strong> Es wurden noch keine geprüften Demo-Kundenmeldungen geladen.';
+    return '<strong>Neueste relevante Meldung:</strong> ' + escapeHtml(top.customer_name) + ' – ' + escapeHtml(top.title) +
+      '. <strong>Fakt:</strong> ' + escapeHtml(top.fact) + ' <strong>Interpretation:</strong> ' + escapeHtml(top.interpretation) +
+      ' <strong>Empfehlung:</strong> ' + escapeHtml(top.recommendation);
+  }
+
+  function renderNews(items, fetchedAt) {
+    state.news = items;
+    const container = document.getElementById('customer-news');
+    const topItems = items.filter(item => item.relevance >= 50).slice(0, 3);
+    if (!topItems.length) {
+      container.innerHTML = '<span class="subtle">Keine vertriebsrelevanten Demo-Meldungen gefunden.</span>';
+    } else {
+      container.innerHTML = topItems.map(item => `
+        <article class="news-card">
+          <div class="news-meta"><span class="badge">${escapeHtml(item.customer_name)}</span><span>${new Intl.DateTimeFormat('de-DE').format(new Date(item.published_at))}</span><span>Relevanz ${escapeHtml(item.relevance)} %</span></div>
+          <h3>${escapeHtml(item.title)}</h3>
+          <div class="news-grid">
+            <div class="news-note"><b>Fakt</b>${escapeHtml(item.fact)}</div>
+            <div class="news-note"><b>Interpretation</b>${escapeHtml(item.interpretation)}</div>
+            <div class="news-note"><b>Empfehlung</b>${escapeHtml(item.recommendation)}</div>
+          </div>
+          <a class="source-link" href="${escapeHtml(item.url)}">Originale Demoquelle öffnen</a>
+        </article>
+      `).join('');
+    }
+    document.getElementById('news-source-state').textContent =
+      items.length + ' Meldungen aus 3 Demo-Webseiten geprüft · eingebettete Daten geladen ' +
+      new Intl.DateTimeFormat('de-DE', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit'}).format(fetchedAt) + ' Uhr';
+    state.answers.news = buildNewsAnswer();
+  }
+
+  async function loadCustomerNews() {
+    const button = document.getElementById('refresh-news');
+    const container = document.getElementById('customer-news');
+    button.disabled = true;
+    document.getElementById('news-source-state').textContent = 'Demo-Kundenwebseiten werden geprüft …';
+    try {
+      const manifestResponse = await fetch('./data/customer-websites.json', {cache: 'no-store'});
+      if (!manifestResponse.ok) throw new Error('Quellenliste: HTTP ' + manifestResponse.status);
+      const manifest = await manifestResponse.json();
+      if (manifest.mode !== 'DEMO' || !Array.isArray(manifest.sites)) throw new Error('Ungültige Demo-Quellenliste');
+      const feeds = await Promise.all(manifest.sites.map(async site => {
+        const response = await fetch(site.feed_url, {cache: 'no-store'});
+        if (!response.ok) throw new Error(site.customer_name + ': HTTP ' + response.status);
+        const feed = await response.json();
+        if (feed.mode !== 'DEMO' || !Array.isArray(feed.items)) throw new Error(site.customer_name + ': ungültiges Demo-Format');
+        return feed.items.map(item => ({...item, customer_name: feed.customer_name, source_type: feed.source_type}));
+      }));
+      const items = feeds.flat().sort((a, b) => b.relevance - a.relevance || new Date(b.published_at) - new Date(a.published_at));
+      renderNews(items, new Date());
+      showToast('Eingebettete Demo-Nachrichten wurden neu geladen');
+    } catch (error) {
+      state.news = [];
+      state.answers.news = '<strong>Quellenfehler:</strong> Die Demo-Kundenwebseiten konnten nicht vollständig geprüft werden. Es wurden keine Meldungen ersetzt oder erfunden.';
+      container.innerHTML = '<span class="subtle">Die Demo-Kundenwebseiten sind nicht vollständig verfügbar. Es werden keine Ersatzwerte angezeigt.</span>';
+      document.getElementById('news-source-state').textContent = 'Abruf fehlgeschlagen: ' + error.message;
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  function renderApp(data) {
+    state.data = data;
+    const opportunities = [...data.opportunities];
+    const priorities = [...opportunities].sort((a, b) => b.priority_score - a.priority_score).slice(0, 3);
+    const risks = opportunities.filter(item => item.status === 'risk').sort((a, b) => b.volume_eur - a.volume_eur);
+    const pipeline = opportunities.reduce((sum, item) => sum + item.volume_eur, 0);
+    const expected = opportunities.reduce((sum, item) => sum + item.volume_eur * item.probability_percent / 100, 0);
+    const riskVolume = risks.reduce((sum, item) => sum + item.volume_eur, 0);
+    const targetRate = Math.round(expected / data.sales_rep.monthly_target_eur * 100);
+    const generatedAt = new Date(data.metadata.generated_at);
+    const allSourcesAvailable = data.metadata.sources.every(source => source.status === 'available');
+
+    document.getElementById('data-freshness').innerHTML =
+      '<span class="pulse"></span>Demo-Daten · ' +
+      new Intl.DateTimeFormat('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}).format(generatedAt) +
+      ' Uhr · ' + data.metadata.completeness_percent + ' % vollständig';
+    document.getElementById('greeting').textContent = 'Guten Tag';
+    document.getElementById('date').textContent =
+      new Intl.DateTimeFormat('de-DE', {weekday: 'long', day: 'numeric', month: 'long'}).format(generatedAt);
+    document.getElementById('daily-summary').textContent =
+      priorities.length + ' Prioritäten · ' + data.appointments.length + ' Kundentermine';
+    document.getElementById('pipeline-value').textContent = euro.format(pipeline);
+    document.getElementById('pipeline-note').textContent = opportunities.length + ' aktive Verkaufschancen';
+    document.getElementById('expected-value').textContent = euro.format(expected);
+    document.getElementById('target-note').textContent = targetRate + ' % des Monatsziels · gewichteter Demo-Wert';
+    document.getElementById('risk-count').textContent = risks.length;
+    document.getElementById('risk-note').textContent = euro.format(riskVolume) + ' betroffen';
+    document.getElementById('recommendation-count').textContent = priorities.length + ' Empfehlungen';
+    document.getElementById('commander-source').textContent =
+      allSourcesAvailable ? 'Demo-CRM, Demo-ERP & Demo-Kalender verfügbar' : 'Demo-Daten teilweise verfügbar';
+
+    document.getElementById('priorities').innerHTML = priorities.map((item, index) => `
+      <article class="priority" data-task data-task-id="${escapeHtml(item.id)}">
+        <div class="rank ${item.status === 'risk' ? 'hot' : ''}">${String(index + 1).padStart(2, '0')}</div>
+        <div>
+          <div class="p-title">${escapeHtml(actionTitle(item))}</div>
+          <div class="p-reason"><b>Fakt:</b> ${escapeHtml(item.fact)}<br><b>Empfehlung:</b> ${escapeHtml(item.recommendation)}</div>
+        </div>
+        <div class="actions">
+          <button class="icon-btn done-btn" aria-label="Aufgabe erledigen" title="Erledigt"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2"/></svg></button>
+          <button class="icon-btn snooze-btn" aria-label="Aufgabe verschieben" title="Verschieben"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/><path d="M12 8v5l3 2" stroke="currentColor" stroke-width="2"/></svg></button>
+        </div>
+      </article>
+    `).join('');
+
+    document.getElementById('opportunities-table').innerHTML = opportunities
+      .sort((a, b) => b.priority_score - a.priority_score)
+      .map(item => `
+        <tr>
+          <td><strong>${escapeHtml(item.customer)}</strong><small>${escapeHtml(item.industry)} · ${item.employees} MA</small></td>
+          <td>${euro.format(item.volume_eur)}</td>
+          <td>${escapeHtml(item.stage)}</td>
+          <td><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status_label)}</span></td>
+          <td>${escapeHtml(item.next_action)}</td>
+        </tr>
+      `).join('');
+
+    document.getElementById('signals').innerHTML = data.customer_signals.map(signal => `
+      <div class="signal"><i></i><div><strong>${escapeHtml(signal.title)}</strong><p>${escapeHtml(signal.detail)} · Quelle: ${escapeHtml(signal.source)}</p></div></div>
+    `).join('');
+
+    renderCalendar(data.appointments, generatedAt);
+
+    buildAnswers(data, priorities, risks);
+    briefing.innerHTML = '<strong>Demo-Tagesbriefing:</strong> ' +
+      priorities.map((item, index) => (index + 1) + '. ' + escapeHtml(item.customer) + ': ' + escapeHtml(item.recommendation)).join(' ');
+    bindTaskButtons();
+  }
+
+  async function loadDemoData() {
+    try {
+      const response = await fetch('./data/sales-demo.json', {cache: 'no-store'});
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const data = await response.json();
+      if (data.metadata?.mode !== 'DEMO' || !Array.isArray(data.opportunities)) {
+        throw new Error('Ungültiges Demo-Datenformat');
+      }
+      renderApp(data);
+    } catch (error) {
+      document.getElementById('data-freshness').innerHTML = '<span class="pulse" style="background:var(--red)"></span>Demo-Datenquelle nicht verfügbar';
+      briefing.innerHTML = '<strong>Datenfehler:</strong> Das Tagesbriefing kann ohne geprüfte Testdaten nicht erstellt werden. Es wurden keine Werte erfunden.';
+      document.getElementById('priorities').innerHTML = '<span class="subtle">Keine belastbaren Daten verfügbar.</span>';
+      document.getElementById('opportunities-table').innerHTML = '<tr><td colspan="5">Keine belastbaren Daten verfügbar.</td></tr>';
+      document.getElementById('signals').innerHTML = '<span class="subtle">Keine belastbaren Daten verfügbar.</span>';
+    }
+  }
+
+  document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => {
+    briefing.innerHTML = state.answers[button.dataset.question] || '<strong>Hinweis:</strong> Die Demo-Daten sind noch nicht geladen.';
+  }));
+
+  document.getElementById('ask-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const input = document.getElementById('ask-input');
+    const question = input.value.trim().toLowerCase();
+    if (!question) return;
+    if (question.includes('lager') || question.includes('bestand') || question.includes('produkt') || question.includes('liefer')) briefing.innerHTML = state.answers.inventory || 'Demo-Lagerdaten noch nicht geladen.';
+    else if (question.includes('rechnung') || question.includes('zahlung') || question.includes('fällig')) briefing.innerHTML = state.answers.invoices || 'Demo-Rechnungsdaten noch nicht geladen.';
+    else if (question.includes('risiko') || question.includes('umsatz') || question.includes('verlier')) briefing.innerHTML = state.answers.risks;
+    else if (question.includes('apex') || question.includes('termin')) briefing.innerHTML = state.answers.meeting;
+    else if (question.includes('auftrag') || question.includes('bestellung') || question.includes('auftragseingang')) briefing.innerHTML = state.answers.orders;
+    else if (question.includes('neu') || question.includes('webseite') || question.includes('meldung')) briefing.innerHTML = state.answers.news;
+    else if (question.includes('wichtig') || question.includes('jetzt') || question.includes('priorität')) briefing.innerHTML = state.answers.next;
+    else briefing.innerHTML = '<strong>Demo-Grenze:</strong> Diese Frage ist noch nicht als Testfall hinterlegt. Die App verwendet ausschließlich die geladene Demo-Datenquelle und erfindet keine Antwort.';
+    input.value = '';
+  });
+
+  document.getElementById('cancel-note').addEventListener('click', () => {
+    document.getElementById('note-dialog').close();
+  });
+
+  document.getElementById('note-form').addEventListener('submit', event => {
+    event.preventDefault();
+    if (!state.activeAppointmentId || !state.data) return;
+    const note = document.getElementById('note-text').value.trim();
+    if (note) state.calendarNotes[state.activeAppointmentId] = note;
+    else delete state.calendarNotes[state.activeAppointmentId];
+    localStorage.setItem(notesStorageKey, JSON.stringify(state.calendarNotes));
+    document.getElementById('note-dialog').close();
+    renderCalendar(state.data.appointments, new Date(state.data.metadata.generated_at));
+    showToast(note ? 'Demo-Terminnotiz gespeichert' : 'Demo-Terminnotiz entfernt');
+  });
+
+  const modelContext = document.modelContext;
+  if (modelContext?.registerTool) {
+    const lifecycle = new AbortController();
+    const register = tool => Promise.resolve(modelContext.registerTool(tool, {signal: lifecycle.signal})).catch(() => {});
+    register({
+      name: 'complete_priority',
+      title: 'Priorität erledigen',
+      description: 'Markiert eine sichtbare Vertriebspriorität anhand ihrer ID als erledigt.',
+      inputSchema: {
+        type: 'object',
+        properties: {taskId: {type: 'string', minLength: 1}},
+        required: ['taskId'],
+        additionalProperties: false
+      },
+      annotations: {readOnlyHint: false, untrustedContentHint: false},
+      execute(input) {
+        const task = document.querySelector('[data-task-id="' + CSS.escape(input?.taskId || '') + '"]');
+        if (!task) throw new Error('Unbekannte Priorität');
+        task.classList.add('done');
+        state.completed.add(input.taskId);
+        showToast('Aufgabe als erledigt markiert');
+        return {taskId: input.taskId, status: 'completed', mode: 'DEMO'};
+      }
+    });
+    register({
+      name: 'ask_commander',
+      title: 'Commander befragen',
+      description: 'Zeigt eine vorbereitete Demo-Antwort zu Umsatzrisiko, Terminvorbereitung, nächster Priorität, Kunden-News oder Auftragseingang.',
+      inputSchema: {
+        type: 'object',
+        properties: {topic: {type: 'string', enum: ['risks', 'meeting', 'next', 'news', 'orders', 'inventory', 'invoices']}},
+        required: ['topic'],
+        additionalProperties: false
+      },
+      annotations: {readOnlyHint: true, untrustedContentHint: false},
+      execute(input) {
+        if (!state.answers[input?.topic]) throw new Error('Unbekanntes Thema oder Daten noch nicht geladen');
+        briefing.innerHTML = state.answers[input.topic];
+        return {topic: input.topic, status: 'shown', mode: 'DEMO'};
+      }
+    });
+  }
+
+  document.getElementById('refresh-all').addEventListener('click', async () => {
+    const button = document.getElementById('refresh-all'); button.disabled = true;
+    try { await Promise.all([loadDemoData(), loadCustomerNews(), loadOrdersData(), loadOperational('inventory'), loadOperational('invoices')]); } finally { button.disabled = false; }
+  });
+  document.getElementById('refresh-news').addEventListener('click', loadCustomerNews);
+  document.getElementById('refresh-orders').addEventListener('click', loadOrdersData);
+
+  const dateFormat = value => value ? new Intl.DateTimeFormat('de-DE').format(new Date(value + 'T12:00:00+02:00')) : 'Nicht geplant';
+  function sourceLabel(data) {
+    return data.metadata.source + ' · Fiktive Demo-Daten · Datenstand ' + new Intl.DateTimeFormat('de-DE', {dateStyle:'short', timeStyle:'short', timeZone:'Europe/Berlin'}).format(new Date(data.metadata.generated_at)) + ' Uhr';
+  }
+  async function loadOperational(kind) {
+    const button = document.getElementById('refresh-' + kind);
+    button.disabled = true;
+    try {
+      const response = await fetch('./data/' + (kind === 'inventory' ? 'inventory' : 'invoices') + '-demo.json', {cache:'no-store'});
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const data = await response.json();
+      if (data.metadata?.mode !== 'DEMO' || !Number.isFinite(Date.parse(data.metadata.generated_at))) throw new Error('Ungültiger Demo-Datenstand');
+      if (kind === 'inventory') {
+        const rows = data.products;
+        if (!Array.isArray(rows) || rows.some(p => !p.id || !p.name || ![p.stock,p.reserved,p.minimum].every(n => Number.isFinite(n) && n >= 0))) throw new Error('Ungültige Lagerdaten');
+        const low = rows.filter(p => p.stock - p.reserved < p.minimum);
+        const shortage = rows.filter(p => p.reserved > p.stock);
+        document.getElementById('inventory-count').textContent = rows.length;
+        document.getElementById('inventory-low').textContent = low.length;
+        document.getElementById('inventory-shortage').textContent = shortage.length;
+        document.getElementById('inventory-table').innerHTML = rows.map(p => {
+          const free = p.stock - p.reserved;
+          return `<tr><td><strong>${escapeHtml(p.name)}</strong><small>${escapeHtml(p.id)} · ${escapeHtml(p.customer)}</small></td><td>${p.stock}</td><td>${p.reserved}</td><td>${free}</td><td><span class="badge ${free < 0 ? 'risk' : free < p.minimum ? 'warn' : ''}">${free < 0 ? 'Überreserviert' : free < p.minimum ? 'Unter Minimum' : 'Verfügbar'}</span><small>Minimum: ${p.minimum} ${escapeHtml(p.unit)}</small></td><td>${dateFormat(p.next_receipt)}</td></tr>`;
+        }).join('') || '<tr><td colspan="6">Keine Demo-Produkte vorhanden.</td></tr>';
+        state.answers.inventory = '<strong>Fakt:</strong> ' + low.length + ' von ' + rows.length + ' Demo-Produkten liegen nach Reservierungen unter dem Mindestbestand. ' + shortage.length + ' sind überreserviert. <strong>Quelle:</strong> Demo-Lager. <strong>Interpretation:</strong> Die verfügbaren Mengen können Liefertermine einschränken. <strong>Empfehlung:</strong> ' + (shortage.length ? escapeHtml(shortage[0].name) + ' für ' + escapeHtml(shortage[0].customer) + ' zuerst mit dem Lager prüfen.' : 'Nachbeschaffung der Artikel unter Minimum prüfen.') + ' Es wurde keine Bestellung ausgelöst.';
+      } else {
+        const rows = data.invoices;
+        if (!Array.isArray(rows) || !/^\d{4}-\d{2}-\d{2}$/.test(data.metadata.as_of) || rows.some(p => !p.id || ![p.net_eur,p.paid_eur].every(n => Number.isFinite(n) && n >= 0) || p.paid_eur > p.net_eur || !/^\d{4}-\d{2}-\d{2}$/.test(p.due_date))) throw new Error('Ungültige Rechnungsdaten');
+        const open = rows.reduce((s,p) => s + p.net_eur - p.paid_eur,0);
+        const overdue = rows.filter(p => p.net_eur > p.paid_eur && p.due_date < data.metadata.as_of);
+        const overdueValue = overdue.reduce((s,p) => s + p.net_eur - p.paid_eur,0);
+        document.getElementById('invoices-open').textContent = euro.format(open);
+        document.getElementById('invoices-overdue').textContent = euro.format(overdueValue);
+        document.getElementById('invoices-count').textContent = overdue.length;
+        document.getElementById('invoices-table').innerHTML = rows.map(p => {
+          const rest = p.net_eur - p.paid_eur;
+          const late = rest > 0 && p.due_date < data.metadata.as_of;
+          return `<tr><td><strong>${escapeHtml(p.id)}</strong><small>${escapeHtml(p.customer)}</small></td><td>${euro.format(p.net_eur)}</td><td>${euro.format(p.paid_eur)}</td><td>${euro.format(rest)}</td><td>${dateFormat(p.due_date)}</td><td><span class="badge ${late ? 'risk' : ''}">${!rest ? 'Bezahlt' : late ? 'Überfällig' : p.paid_eur ? 'Teilbezahlt' : 'Offen'}</span></td></tr>`;
+        }).join('') || '<tr><td colspan="6">Keine Demo-Rechnungen vorhanden.</td></tr>';
+        state.answers.invoices = '<strong>Fakt:</strong> ' + euro.format(open) + ' netto sind offen. Davon sind ' + euro.format(overdueValue) + ' in ' + overdue.length + ' Rechnungen zum ' + dateFormat(data.metadata.as_of) + ' überfällig. <strong>Quelle:</strong> Demo-Buchhaltung. <strong>Interpretation:</strong> Ein Klärungsbedarf ist sichtbar; die Ursache ist nicht belegt. <strong>Empfehlung:</strong> Zahlungsstand zuerst intern prüfen und einen Gesprächsentwurf vorbereiten. Keine Mahnung wurde versendet.';
+      }
+      document.getElementById(kind + '-source-state').textContent = sourceLabel(data);
+    } catch (error) {
+      document.getElementById(kind + '-source-state').textContent = 'Quelle nicht verfügbar: ' + error.message;
+      document.getElementById(kind + '-table').innerHTML = '<tr><td colspan="6">Keine geprüften Daten verfügbar. Keine Ersatzwerte.</td></tr>';
+      const ids = kind === 'inventory' ? ['inventory-count','inventory-low','inventory-shortage'] : ['invoices-open','invoices-overdue','invoices-count'];
+      ids.forEach(id => document.getElementById(id).textContent = '–');
+      state.answers[kind] = '<strong>Quellenfehler:</strong> Diese Demo-Datenquelle ist nicht verfügbar. Es werden keine Werte geschätzt.';
+    } finally { button.disabled = false; }
+  }
+  document.getElementById('refresh-inventory').addEventListener('click', () => loadOperational('inventory'));
+  document.getElementById('refresh-invoices').addEventListener('click', () => loadOperational('invoices'));
+  loadOperational('inventory');
+  loadOperational('invoices');
+
+  loadDemoData();
+  loadCustomerNews();
+  loadOrdersData();
+})();
+</script>
+</body>
+</html>
